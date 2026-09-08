@@ -12,10 +12,23 @@ export function MiniMap({
   visited: Set<AreaId>;
   open: (area?: AreaId) => void;
 }) {
+  const [compactOpen, setCompactOpen] = useState(false);
   const [position, setPosition] = useState<{ x: number; y: number }>(WORLD.start);
   useEffect(() => bridge.on('position', setPosition), []);
   return (
-    <div className={expanded ? 'map-expanded' : 'minimap'}>
+    <div
+      className={expanded ? 'map-expanded' : `minimap ${compactOpen ? 'mini-open' : 'mini-closed'}`}
+    >
+      {!expanded && (
+        <button
+          className="minimap-toggle"
+          onClick={() => setCompactOpen((value) => !value)}
+          aria-expanded={compactOpen}
+          aria-label={compactOpen ? 'Hide minimap' : 'Show minimap'}
+        >
+          <Icon name="map" size={16} /> Map
+        </button>
+      )}
       <div className="map-image">
         <GardenPreview />
         {areas.map((area, i) =>

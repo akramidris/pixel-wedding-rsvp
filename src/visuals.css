@@ -1,0 +1,1271 @@
+/* Refined invitation typography and high-density game presentation. */
+:root {
+  --sage: #526f5c;
+  --dark: #354e40;
+  --gold: #a58a58;
+  --muted: #77806e;
+  --line: #e2e2d3;
+  color: #405443;
+  background: #f7f5ee;
+}
+button:focus-visible,
+a:focus-visible {
+  outline-color: #947443;
+  outline-offset: 3px;
+}
+.primary,
+.secondary {
+  min-height: 46px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.primary {
+  box-shadow:
+    inset 0 1px #ffffff18,
+    0 3px 8px #273f3010;
+}
+.secondary {
+  background: #fafaf3;
+  border-color: #d4dbc9;
+}
+.icon-button {
+  width: 42px;
+  height: 42px;
+  border-radius: 9px;
+}
+.text-button {
+  font-size: 12px;
+}
+.eyebrow {
+  font-size: 10px;
+  color: #70795e;
+  letter-spacing: 1.8px;
+}
+.brand small {
+  font-size: 9px;
+  color: #747e65;
+  letter-spacing: 1.7px;
+}
+.header-date {
+  font-size: 12px;
+  color: #727d67;
+}
+.header-right .text-button {
+  font-size: 12px;
+}
+.landing-heading .eyebrow {
+  font-size: 9px;
+  color: #76815f;
+}
+.landing-heading p {
+  color: #4f664f;
+  font-size: 30px;
+}
+.hero-copy {
+  background: #fffcf4;
+  padding-block: 32px;
+}
+.hero-copy:before {
+  border-color: #e1dbc6;
+}
+.hero-copy > .eyebrow {
+  font-size: 10px;
+  color: #8b754d;
+}
+.hero-copy h1 {
+  color: #405f4b;
+  font-weight: 500;
+}
+.hero-greeting {
+  font-size: 23px;
+  color: #6f785c;
+}
+.hero-description {
+  font-size: 13px;
+  line-height: 1.85;
+  color: #747d66;
+}
+.hero-flourish {
+  margin-bottom: 20px;
+  color: #929d72;
+}
+.hero-date {
+  margin-block: 19px 13px;
+}
+.date-line {
+  font-size: 13px;
+  color: #486247;
+}
+.venue-line {
+  font-size: 12px;
+  color: #7d8069;
+  line-height: 1.6;
+}
+.enter-button {
+  font-size: 12px;
+  min-height: 49px;
+  width: min(282px, 100%);
+  margin-top: 23px;
+}
+.hero-footnote {
+  font-size: 10px;
+  color: #777f66;
+}
+.invitation-link {
+  font-size: 11px;
+  color: #6c775d;
+  line-height: 1.7;
+  margin-top: 15px;
+}
+.preview-canvas,
+.map-image canvas {
+  image-rendering: auto;
+  filter: none;
+}
+.hero-world {
+  background: #849c72;
+}
+.hero-world:after {
+  background: none;
+}
+.world-badge {
+  color: #52634c;
+  font-size: 9px;
+  border-radius: 20px;
+  padding: 10px 13px;
+  background: #faf7eaf2;
+  letter-spacing: 1.1px;
+}
+.world-caption {
+  background: #fffcf1f5;
+  padding: 16px;
+  gap: 12px;
+  border: 1px solid #e5dfc8;
+  box-shadow: 0 6px 24px #35482f18;
+}
+.world-caption strong {
+  font-size: 22px;
+  color: #496047;
+}
+.world-caption p {
+  font-size: 11px;
+  line-height: 1.55;
+  color: #798067;
+}
+.world-caption .caption-icon {
+  width: 40px;
+  height: 43px;
+}
+.journey-note strong {
+  font-size: 22px;
+  color: #53684c;
+}
+.journey-note p {
+  font-size: 11px;
+  color: #7e866f;
+}
+.countdown strong {
+  font-size: 34px;
+  color: #566e4d;
+}
+.countdown span {
+  font-size: 9px;
+  color: #7d876c;
+  letter-spacing: 1.2px;
+}
+.countdown > div {
+  min-width: 76px;
+}
+.feature-strip {
+  font-size: 11px;
+  color: #788469;
+}
+.site-footer {
+  font-size: 10px;
+  color: #7e876f;
+}
+
+/* The game retains nearest-neighbour texture sampling. CSS does not enlarge
+   the completed low-resolution canvas, and HiDPI has its own backing size. */
+.game-shell {
+  background: #dbe2d0;
+}
+.game-canvas canvas {
+  image-rendering: auto;
+}
+.game-brand,
+.game-toolbar,
+.location-card {
+  background: #fffcf2f5;
+  border-color: #faf5e4;
+  box-shadow: 0 4px 20px #2f42221c;
+}
+.game-brand {
+  border-radius: 12px;
+  padding: 12px 17px;
+}
+.game-brand > span {
+  font-weight: 500;
+}
+.game-brand small {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #7a8468;
+}
+.game-toolbar {
+  padding: 6px;
+  border-radius: 12px;
+}
+.game-toolbar .icon-button {
+  border: none;
+  width: 42px;
+  height: 42px;
+}
+.location-card {
+  top: 113px;
+  border-radius: 9px;
+  padding: 12px 15px;
+  gap: 12px;
+}
+.location-card span:not(.location-icon) {
+  font-size: 9px;
+  color: #7c865f;
+  letter-spacing: 1.2px;
+}
+.location-card h2 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #435b42;
+}
+.discovery-card {
+  top: 202px;
+  font-size: 10px;
+  background: #f8f8eaf0;
+  padding: 8px 12px;
+  color: #60754f;
+}
+.minimap {
+  width: 158px;
+  padding: 7px;
+  border-color: #fdf8e7;
+  border-radius: 11px;
+  background: #fdfbf0f5;
+}
+.minimap-label {
+  font-size: 10px;
+  padding-top: 8px;
+  color: #617250;
+}
+.control-hints {
+  font-size: 11px;
+  background: #fffcf2f5;
+  padding: 12px 15px;
+  border-radius: 9px;
+}
+kbd {
+  font-size: 10px;
+  border-color: #cfd9bc;
+  color: #52694a;
+  background: #edf1e0;
+}
+.nearby-action {
+  font-size: 12px;
+  border-radius: 10px;
+  padding: 13px 16px;
+  background: #fffcf2f5;
+  color: #4b6447;
+}
+
+/* One typography scale and common surfaces across every invitation card. */
+.modal-backdrop {
+  background: #243e3466;
+  backdrop-filter: blur(5px);
+}
+.modal {
+  width: 560px;
+  padding: 34px 38px;
+  border: 1px solid #e8dfc5;
+  border-radius: 16px;
+  box-shadow: 0 24px 80px #19392e35;
+  background: #fffdf5;
+  scrollbar-width: thin;
+  scrollbar-color: #ccd5b9 transparent;
+}
+.modal:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 35%;
+  right: 35%;
+  height: 3px;
+  background: #bb9f65;
+}
+.modal-wide {
+  width: 700px;
+}
+.modal-close {
+  width: 42px;
+  height: 42px;
+  top: 10px;
+  right: 10px;
+  color: #708261;
+}
+.modal-header .eyebrow {
+  font-size: 9px;
+  color: #8a7855;
+  letter-spacing: 1.65px;
+}
+.modal-header h2 {
+  font-size: 36px;
+  color: #435f49;
+  font-weight: 500;
+}
+.modal-intro {
+  font-size: 13px;
+  color: #77836b;
+  line-height: 1.8;
+}
+.formal-invitation {
+  color: #718065;
+}
+.formal-invitation > p {
+  font-size: 13px;
+}
+.formal-invitation .formal-greeting {
+  font-size: 12px;
+  color: #667d59;
+}
+.formal-invitation .bismillah {
+  font-size: 26px;
+  color: #566e4c;
+}
+.couple-names {
+  color: #4d6a4d;
+  font-size: 42px;
+  font-weight: 500;
+}
+.families {
+  font-size: 12px;
+  gap: 24px;
+}
+.invitation-details {
+  font-size: 13px;
+  background: #f6f7ec;
+  border-color: #dce3ce;
+  margin-inline: -8px;
+}
+.serif-note,
+.formal-invitation > .serif-note {
+  font-size: 22px;
+  color: #8c8261;
+}
+.button-row {
+  gap: 10px;
+}
+.button-row .primary,
+.button-row .secondary {
+  font-size: 12px;
+  min-height: 44px;
+  padding: 11px 15px;
+}
+.venue-card {
+  border-color: #dae3c7;
+  padding: 24px;
+}
+.venue-card p,
+.facilities p {
+  font-size: 12px;
+  color: #788569;
+}
+.facilities strong {
+  font-size: 13px;
+}
+.wedding-form label,
+.attendance legend {
+  font-size: 13px;
+  color: #566e4e;
+}
+.wedding-form input:not([type='radio']),
+.wedding-form textarea,
+.wedding-form select {
+  font-size: 14px;
+  border-color: #d7deca;
+  padding: 13px;
+  border-radius: 7px;
+  color: #425e44;
+  background: #fcfcf5;
+}
+.wedding-form input::placeholder,
+.wedding-form textarea::placeholder {
+  font-size: 12px;
+  color: #879477;
+}
+.form-bottom > span,
+.label-note {
+  font-size: 11px;
+  color: #7f8a6d;
+}
+.attendance label {
+  padding: 15px 10px;
+  font-size: 11px;
+  min-height: 49px;
+}
+.storage-note {
+  font-size: 11px;
+  color: #7f896f;
+  line-height: 1.7;
+}
+.success,
+.form-error {
+  font-size: 12px;
+}
+.wish {
+  background: #f6f2e5;
+  border-left-color: #bba275;
+  border-radius: 0 7px 7px 0;
+}
+.wish p {
+  font-size: 13px;
+  color: #637453;
+}
+.wish span {
+  font-size: 11px;
+  color: #818869;
+}
+.wish-board > h3 {
+  font-size: 26px;
+}
+.schedule-date > span {
+  font-size: 11px;
+  color: #8c805d;
+}
+.schedule-date p {
+  font-size: 13px;
+}
+.schedule-date small {
+  font-size: 11px;
+  color: #7f896e;
+}
+.timeline time {
+  font-size: 12px;
+  color: #8a815b;
+}
+.timeline h3 {
+  font-size: 25px;
+  font-weight: 500;
+}
+.timeline p {
+  font-size: 12px;
+  color: #7a866b;
+}
+.story-timeline time {
+  font-size: 29px;
+}
+.welcome-content > p:not(.serif-note):not(.storage-note) {
+  font-size: 14px;
+  color: #758365;
+}
+.welcome-content h3 {
+  font-weight: 500;
+  color: #4e6b4f;
+}
+.couple-sprites {
+  width: 256px;
+  height: 144px;
+  max-width: 100%;
+  image-rendering: pixelated;
+  border-bottom: 1px solid #dde5d0;
+}
+.menu-grid button {
+  font-size: 13px;
+  padding: 16px 13px;
+  min-height: 51px;
+}
+.tutorial > p,
+.tutorial section p {
+  font-size: 13px;
+  color: #768168;
+}
+.tutorial h3 {
+  font-size: 25px;
+  font-weight: 500;
+}
+.tutorial kbd {
+  font-size: 10px;
+}
+.music-panel > p,
+.music-panel label {
+  font-size: 13px;
+  color: #728064;
+}
+.music-panel input {
+  min-height: 28px;
+}
+.map-marker {
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+}
+.map-legend > button {
+  font-size: 12px;
+  min-height: 43px;
+  padding: 11px;
+  border: 1px solid #e5e9d8;
+}
+.map-legend > button > span,
+.map-legend > p {
+  font-size: 11px;
+}
+.rpg-dialogue {
+  width: 660px;
+  padding: 24px 28px;
+  border: 1px solid #d4cfb0;
+  border-radius: 12px;
+}
+.rpg-dialogue .modal-header {
+  margin-bottom: 12px;
+}
+.rpg-message {
+  font-size: 14px;
+  color: #687b58;
+  line-height: 1.85;
+}
+.rpg-continue {
+  min-height: 42px;
+  padding-right: 5px;
+}
+.photo-frame img {
+  image-rendering: auto;
+}
+
+@media (max-width: 1050px) {
+  .hero-copy h1 {
+    font-size: 57px;
+    gap: 8px;
+  }
+  .hero-description {
+    font-size: 12px;
+  }
+  .world-caption strong {
+    font-size: 21px;
+  }
+  .world-caption p {
+    font-size: 10px;
+  }
+  .feature-strip {
+    gap: 17px;
+    font-size: 10px;
+  }
+  .control-hints {
+    gap: 11px;
+    font-size: 10px;
+  }
+}
+@media (max-width: 760px) {
+  .brand {
+    font-size: 25px;
+  }
+  .brand small {
+    font-size: 7px;
+  }
+  .header-right .text-button {
+    font-size: 11px;
+    min-height: 44px;
+  }
+  .landing-heading .eyebrow {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+  .landing-heading p {
+    font-size: 28px;
+  }
+  .hero-copy {
+    padding: 30px 22px 22px;
+  }
+  .hero-copy h1 {
+    font-size: clamp(46px, 13vw, 70px);
+    gap: 10px;
+  }
+  .hero-greeting {
+    font-size: 23px;
+  }
+  .hero-description {
+    font-size: 13px;
+  }
+  .hero-date {
+    margin-block: 17px 12px;
+  }
+  .date-line {
+    font-size: 12px;
+  }
+  .venue-line {
+    font-size: 11px;
+  }
+  .hero-footnote {
+    font-size: 9px;
+  }
+  .invitation-link {
+    font-size: 10px;
+    min-height: 40px;
+    margin-top: 5px;
+  }
+  .hero-world {
+    min-height: 370px;
+  }
+  .world-badge {
+    font-size: 8px;
+    padding: 8px 11px;
+  }
+  .world-caption {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    padding: 13px;
+  }
+  .world-caption strong {
+    font-size: 21px;
+    line-height: 1.05;
+    display: block;
+  }
+  .world-caption p {
+    font-size: 10px;
+  }
+  .world-caption > svg {
+    display: none;
+  }
+  .journey-note strong {
+    font-size: 22px;
+  }
+  .journey-note p {
+    font-size: 11px;
+  }
+  .countdown > div {
+    min-width: 72px;
+  }
+  .feature-strip {
+    gap: 15px;
+    font-size: 10px;
+  }
+  .site-footer {
+    font-size: 9px;
+    gap: 17px;
+    line-height: 1.7;
+  }
+  .game-canvas {
+    bottom: 154px;
+  }
+  .game-header {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    align-items: center;
+  }
+  .game-brand {
+    padding: 10px 12px;
+    border-radius: 11px;
+    gap: 7px;
+  }
+  .game-brand > svg {
+    display: none;
+  }
+  .game-brand > span {
+    font-size: 23px;
+  }
+  .game-brand small {
+    font-size: 9px;
+    text-align: center;
+    letter-spacing: 0.6px;
+  }
+  .game-toolbar {
+    gap: 0;
+    padding: 4px;
+  }
+  .game-toolbar .icon-button {
+    width: 42px;
+    height: 44px;
+  }
+  .game-toolbar .icon-button svg {
+    width: 19px;
+  }
+  .location-card {
+    top: 92px;
+    left: 12px;
+    padding: 9px 12px;
+    gap: 8px;
+    max-width: calc(100% - 24px);
+  }
+  .location-card span:not(.location-icon) {
+    font-size: 8px;
+  }
+  .location-card h2 {
+    font-size: 23px;
+  }
+  .discovery-card {
+    top: 168px;
+    left: 12px;
+    font-size: 9px;
+    padding: 7px 10px;
+  }
+  .minimap {
+    width: 100px;
+    bottom: 166px;
+    right: 12px;
+    padding: 5px;
+  }
+  .minimap-label {
+    font-size: 8px;
+    padding: 5px 0 0;
+  }
+  .minimap-label kbd {
+    display: none;
+  }
+  .game-bottom {
+    bottom: 0;
+  }
+  .nearby-action {
+    bottom: 166px;
+    max-width: calc(100% - 130px);
+    right: 120px;
+    left: 0;
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 10px 12px;
+    text-align: left;
+  }
+  .mobile-controls:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 154px;
+    background: #f3f3e7;
+    border-top: 1px solid #cbd8bc;
+    box-shadow: 0 -3px 22px #3a513015;
+  }
+  .direction-pad {
+    width: 138px;
+    height: 138px;
+    bottom: 8px;
+    left: 20px;
+  }
+  .direction {
+    width: 46px;
+    height: 46px;
+    border-radius: 9px;
+    background: #fffdf3;
+    border: 1px solid #ccd5b9;
+    box-shadow: 0 2px 0 #cbd4b9;
+    color: #567349;
+    backdrop-filter: none;
+    font-size: 15px;
+  }
+  .direction.up {
+    left: 46px;
+    top: 0;
+  }
+  .direction.left {
+    left: 0;
+    top: 46px;
+  }
+  .direction.right {
+    left: 92px;
+    top: 46px;
+  }
+  .direction.down {
+    left: 46px;
+    top: 92px;
+  }
+  .pad-center {
+    left: 65px;
+    top: 65px;
+    background: #a8b994;
+  }
+  .interact-mobile {
+    right: 29px;
+    bottom: 42px;
+    width: 73px;
+    height: 73px;
+    background: #607b53;
+    color: #fffbed;
+    border: 2px solid #839971;
+    box-shadow:
+      0 4px 0 #455f3e,
+      inset 0 1px #ffffff40;
+    font-size: 31px;
+  }
+  .interact-mobile small {
+    font-size: 8px;
+  }
+  .modal {
+    padding: 30px 23px;
+    max-height: calc(100dvh - 24px);
+  }
+  .modal-backdrop {
+    padding: 12px;
+  }
+  .modal-header h2 {
+    font-size: 31px;
+    padding-inline: 4px;
+  }
+  .modal-header .eyebrow {
+    font-size: 8px;
+  }
+  .formal-invitation > p {
+    font-size: 12px;
+  }
+  .formal-invitation .formal-greeting {
+    font-size: 11px;
+  }
+  .families {
+    font-size: 11px;
+    gap: 13px;
+  }
+  .wedding-form input:not([type='radio']),
+  .wedding-form textarea,
+  .wedding-form select {
+    font-size: 16px;
+  }
+  .attendance label {
+    font-size: 11px;
+    gap: 5px;
+    padding-inline: 8px;
+  }
+  .attendance label svg {
+    display: none;
+  }
+  .button-row .primary,
+  .button-row .secondary {
+    font-size: 11px;
+    padding-inline: 12px;
+  }
+  .menu-grid button {
+    font-size: 12px;
+    gap: 8px;
+  }
+  .map-legend > button {
+    font-size: 11px;
+    gap: 5px;
+    padding: 9px 7px;
+  }
+  .map-legend > p {
+    font-size: 10px;
+    line-height: 1.7;
+  }
+  .map-legend > p > span:last-child {
+    font-size: 10px;
+  }
+  .rpg-message {
+    font-size: 13px;
+  }
+}
+@media (max-width: 380px) {
+  .game-toolbar .icon-button {
+    width: 38px;
+  }
+  .game-brand {
+    padding-inline: 10px;
+  }
+  .game-brand > span {
+    font-size: 21px;
+  }
+  .hero-copy h1 {
+    font-size: 46px;
+  }
+  .attendance label {
+    font-size: 10px;
+  }
+  .feature-strip {
+    font-size: 9px;
+  }
+}
+@media (pointer: coarse) and (min-width: 761px) {
+  .game-canvas {
+    bottom: 145px;
+  }
+  .mobile-controls:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    inset-inline: 0;
+    height: 145px;
+    background: #f3f3e7;
+    border-top: 1px solid #cbd8bc;
+  }
+  .minimap {
+    bottom: 160px;
+  }
+}
+@media (max-height: 550px) and (orientation: landscape) {
+  .game-canvas {
+    bottom: 0;
+  }
+  .mobile-controls:before {
+    display: none;
+  }
+  .direction-pad {
+    transform: scale(0.8);
+    transform-origin: bottom left;
+    bottom: 10px;
+    left: 12px;
+  }
+  .interact-mobile {
+    width: 62px;
+    height: 62px;
+    bottom: 24px;
+    right: 20px;
+  }
+  .minimap {
+    bottom: 107px;
+    width: 86px;
+  }
+  .nearby-action {
+    bottom: 16px;
+    left: 150px;
+    right: 130px;
+    max-width: none;
+  }
+  .location-card {
+    top: 88px;
+  }
+}
+
+/* Smaller supporting HUD surfaces leave more of the garden visible. */
+.game-shell {
+  min-height: 0;
+}
+.minimap-toggle,
+.discovery-inline {
+  display: none;
+}
+.hero-description,
+.modal-intro,
+.formal-invitation,
+.welcome-content > p,
+.couple-content > p,
+.wedding-form label,
+.rpg-message {
+  color: #626e59;
+}
+.hero-footnote,
+.venue-line,
+.invitation-link,
+.journey-note p,
+.world-caption p,
+.site-footer,
+.feature-strip,
+.storage-note,
+.photo-note,
+.wedding-form label > span,
+.countdown span {
+  color: #68745e;
+}
+.eyebrow,
+.hero-copy > .eyebrow,
+.modal-header .eyebrow {
+  color: #7c6947;
+}
+
+@media (max-width: 760px), (pointer: coarse) {
+  .game-header {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    align-items: center;
+  }
+  .game-brand {
+    padding: 7px 11px;
+    gap: 0;
+    border-radius: 10px;
+  }
+  .game-brand > svg {
+    display: none;
+  }
+  .game-brand > span {
+    font-size: 21px;
+  }
+  .game-brand small {
+    font-size: 9px;
+    letter-spacing: 0.6px;
+  }
+  .game-toolbar {
+    padding: 3px;
+    gap: 0;
+  }
+  .game-toolbar .icon-button {
+    width: 44px;
+    height: 44px;
+  }
+  .game-toolbar .fullscreen-button {
+    display: none;
+  }
+  .location-card {
+    top: 78px;
+    left: 12px;
+    gap: 8px;
+    padding: 8px 11px;
+    border-radius: 9px;
+  }
+  .location-card h2 {
+    font-size: 19px;
+    line-height: 1.15;
+  }
+  .location-card .location-icon > svg {
+    width: 17px;
+    height: 17px;
+  }
+  .location-card > div > span:first-child,
+  .discovery-card {
+    display: none;
+  }
+  .location-card .discovery-inline {
+    display: block;
+    font-size: 9px;
+    color: #647654;
+    letter-spacing: 0;
+    margin-top: 3px;
+  }
+  .minimap {
+    width: 86px;
+    padding: 5px;
+    bottom: calc(166px + env(safe-area-inset-bottom));
+    right: 12px;
+  }
+  .minimap-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-height: 34px;
+    border: 0;
+    border-radius: 7px;
+    color: #52694b;
+    background: transparent;
+    font:
+      11px 'DM Sans',
+      sans-serif;
+  }
+  .minimap.mini-closed .map-image,
+  .minimap-label {
+    display: none;
+  }
+  .minimap.mini-open .minimap-toggle {
+    margin-top: 3px;
+  }
+  .nearby-action {
+    bottom: calc(166px + env(safe-area-inset-bottom));
+    max-width: calc(100% - 106px);
+    left: 0;
+    right: 104px;
+    font-size: 11px;
+    min-height: 44px;
+  }
+  .nearby-action kbd {
+    display: none;
+  }
+  .game-canvas {
+    bottom: calc(154px + env(safe-area-inset-bottom));
+  }
+  .mobile-controls:before {
+    height: calc(154px + env(safe-area-inset-bottom));
+  }
+  .direction-pad {
+    width: 138px;
+    height: 138px;
+    bottom: calc(8px + env(safe-area-inset-bottom));
+    left: 20px;
+  }
+  .direction {
+    width: 46px;
+    height: 46px;
+    border-radius: 9px;
+    background: #fffdf3;
+    border: 1px solid #ccd5b9;
+    box-shadow: 0 2px 0 #cbd4b9;
+    color: #567349;
+  }
+  .direction.up {
+    left: 46px;
+    top: 0;
+  }
+  .direction.left {
+    left: 0;
+    top: 46px;
+  }
+  .direction.right {
+    left: 92px;
+    top: 46px;
+  }
+  .direction.down {
+    left: 46px;
+    top: 92px;
+  }
+  .pad-center {
+    left: 65px;
+    top: 65px;
+  }
+  .interact-mobile {
+    right: 29px;
+    bottom: calc(42px + env(safe-area-inset-bottom));
+    width: 73px;
+    height: 73px;
+    background: #607b53;
+    color: #fffbed;
+    border: 2px solid #839971;
+    box-shadow:
+      0 4px 0 #455f3e,
+      inset 0 1px #ffffff40;
+    font-size: 31px;
+  }
+  .interact-mobile small {
+    font-size: 8px;
+  }
+  .map-marker {
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+@media (max-height: 550px) and (orientation: landscape) {
+  .game-canvas {
+    bottom: 0;
+  }
+  .game-header {
+    top: 10px;
+  }
+  .game-brand {
+    padding: 7px 11px;
+  }
+  .game-brand > span {
+    font-size: 21px;
+  }
+  .location-card {
+    top: 75px;
+    padding: 7px 10px;
+  }
+  .location-card h2 {
+    font-size: 18px;
+  }
+  .direction-pad {
+    width: 132px;
+    height: 132px;
+    transform: none;
+    bottom: 12px;
+    left: 12px;
+  }
+  .direction {
+    width: 44px;
+    height: 44px;
+  }
+  .direction.up {
+    left: 44px;
+    top: 0;
+  }
+  .direction.left {
+    left: 0;
+    top: 44px;
+  }
+  .direction.right {
+    left: 88px;
+    top: 44px;
+  }
+  .direction.down {
+    left: 44px;
+    top: 88px;
+  }
+  .pad-center {
+    left: 63px;
+    top: 63px;
+  }
+  .interact-mobile {
+    bottom: 22px;
+    right: 20px;
+    width: 66px;
+    height: 66px;
+  }
+  .minimap {
+    bottom: 107px;
+    width: 80px;
+  }
+  .nearby-action {
+    bottom: 16px;
+    left: 152px;
+    right: 112px;
+    max-width: none;
+    justify-content: center;
+  }
+}
+
+/* Final review: protect the player and retain full-size landscape touch targets. */
+@media (max-height: 550px) and (orientation: landscape) {
+  .nearby-action {
+    display: none;
+  }
+  .mobile-controls .direction-pad {
+    transform: none;
+  }
+}
+@media (max-width: 760px) {
+  .invitation-modal {
+    padding-top: 22px;
+    padding-bottom: 16px;
+  }
+  .invitation-modal .modal-header {
+    margin-bottom: 18px;
+  }
+  .invitation-modal .modal-emblem {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 12px;
+  }
+  .invitation-modal .modal-emblem svg {
+    width: 22px;
+    height: 22px;
+  }
+  .invitation-modal .modal-header h2 {
+    margin-top: 8px;
+    font-size: 29px;
+  }
+  .formal-invitation > p {
+    margin-block: 12px;
+  }
+  .formal-invitation > .bismillah {
+    margin-top: 8px;
+    margin-bottom: 14px;
+  }
+  .formal-invitation .couple-names {
+    margin-block: 16px;
+    line-height: 1.15;
+  }
+  .formal-invitation .couple-names span {
+    margin-block: 4px;
+  }
+  .formal-invitation .families {
+    margin-block: 14px;
+  }
+  .formal-invitation .invitation-details {
+    margin-block: 18px;
+    padding: 14px;
+  }
+  .formal-invitation > .serif-note {
+    margin-block: 18px;
+    font-size: 21px;
+  }
+  .formal-invitation .button-row {
+    position: sticky;
+    bottom: -16px;
+    margin-bottom: -16px;
+    padding-block: 12px 16px;
+    background: #fffdf5;
+    border-top: 1px solid #e3dfcb;
+    box-shadow: 0 -8px 12px #fffdf5;
+    flex-wrap: nowrap;
+  }
+  .formal-invitation .button-row button {
+    min-height: 46px;
+    flex: 1;
+    gap: 6px;
+    padding-inline: 7px;
+  }
+}

@@ -5,6 +5,8 @@ const baseURL = production ? `http://127.0.0.1:4175${path}` : 'http://127.0.0.1:
 export default defineConfig({
   testDir: './tests',
   fullyParallel: false,
+  // Rendering and touch tests share the GPU; serial workers avoid WebGL contention.
+  workers: 1,
   timeout: 60000,
   use: {
     baseURL,

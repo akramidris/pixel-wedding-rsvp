@@ -12,3 +12,4 @@ playwright-report/
 *.pem
 *.key
 .credentials/
+artifacts/

@@ -13,7 +13,7 @@ import { Countdown } from './components/Countdown';
 import { bridge, type Panel } from './game/bridge';
 import { areas, type Area, type AreaId } from './game/world';
 import { weddingConfig as w } from './config/wedding';
-import { drawCharacter } from './game/art/garden';
+import { drawCharacter } from './game/art/characters';
 
 const GameView = lazy(() => import('./components/GameView'));
 const panelTitles: Record<string, [string, string, string]> = {
@@ -35,14 +35,14 @@ function CoupleSprites() {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = ref.current!.getContext('2d')!;
-    c.clearRect(0, 0, 160, 110);
-    drawCharacter(c, 20, 5, 'groom', 0, 0, 4);
-    drawCharacter(c, 85, 5, 'bride', 0, 0, 4);
+    c.clearRect(0, 0, 256, 144);
+    drawCharacter(c, 48, 0, 'groom', 0, 0, 3);
+    drawCharacter(c, 132, 0, 'bride', 0, 0, 3);
   }, []);
   return (
     <canvas
-      width="160"
-      height="110"
+      width="256"
+      height="144"
       ref={ref}
       className="couple-sprites"
       role="img"
@@ -340,6 +340,7 @@ export default function App() {
             <div>
               <span>YOU’RE EXPLORING</span>
               <h2>{nearby?.name || 'The Wedding Garden'}</h2>
+              <span className="discovery-inline">{visited.size} / 8 moments discovered</span>
             </div>
           </div>
           <div className="discovery-card">

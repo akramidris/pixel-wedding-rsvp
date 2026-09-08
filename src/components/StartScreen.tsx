@@ -74,7 +74,7 @@ export function StartScreen({
               Enter Wedding
               <Icon name="arrow" size={18} />
             </button>
-            <span className="hero-footnote">An interactive wedding invitation</span>
+            <span className="hero-footnote">Jemput hadir · An interactive wedding invitation</span>
             <button className="invitation-link" onClick={onInvitation}>
               Just here for the details? View invitation <Icon name="arrow" size={13} />
             </button>

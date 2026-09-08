@@ -62,7 +62,7 @@ export function Modal({
       }}
     >
       <div
-        className={`modal ${wide ? 'modal-wide' : ''} ${dialogue ? 'rpg-dialogue' : ''}`}
+        className={`modal ${wide ? 'modal-wide' : ''} ${dialogue ? 'rpg-dialogue' : ''} ${icon === 'mail' ? 'invitation-modal' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"

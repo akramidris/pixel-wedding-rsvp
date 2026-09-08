@@ -7,8 +7,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, 'guest', 0);
     scene.add.existing(this);
     scene.physics.add.existing(this);
-    this.setScale(2).setCollideWorldBounds(true);
-    (this.body as Phaser.Physics.Arcade.Body).setSize(9, 7).setOffset(4, 17);
+    this.setScale(1).setCollideWorldBounds(true);
+    (this.body as Phaser.Physics.Arcade.Body).setSize(18, 14).setOffset(8, 34);
     this.keys = scene.input.keyboard!.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT') as Record<
       string,
       Phaser.Input.Keyboard.Key
