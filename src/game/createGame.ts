@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { WeddingScene } from './scenes/WeddingScene';
-export function createGame(parent: HTMLElement) {
+import type { WeddingConfig } from '../types/wedding';
+export function createGame(parent: HTMLElement, config: WeddingConfig) {
   // CSS size and backing resolution are separate: Retina screens get a crisp
   // canvas without changing world units, movement speed, or collision sizes.
   const density = Math.min(
@@ -25,7 +26,7 @@ export function createGame(parent: HTMLElement) {
       default: 'arcade',
       arcade: { gravity: { x: 0, y: 0 }, debug: false, fixedStep: false },
     },
-    scene: [WeddingScene],
+    scene: [new WeddingScene(config)],
     render: { antialias: false },
     callbacks: {
       postBoot: (bootedGame) => {

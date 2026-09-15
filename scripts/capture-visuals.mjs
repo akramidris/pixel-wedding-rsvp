@@ -3,7 +3,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 
 const round = process.argv[2] || '1';
 const directory = `artifacts/visual/round-${round}`;
-const url = process.env.VISUAL_URL || 'http://127.0.0.1:5173/';
+const url = process.env.VISUAL_URL || 'http://127.0.0.1:5173/#/demo';
 await mkdir(directory, { recursive: true });
 const browser = await chromium.launch();
 const errors = [];

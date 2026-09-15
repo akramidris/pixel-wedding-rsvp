@@ -4,7 +4,7 @@ const directory = 'artifacts/joystick';
 await mkdir(directory, { recursive: true });
 const browser = await chromium.launch();
 const errors = [];
-const url = process.env.VISUAL_URL || 'http://127.0.0.1:5173/';
+const url = process.env.VISUAL_URL || 'http://127.0.0.1:5173/#/demo';
 async function enter(page) {
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto(url);

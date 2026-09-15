@@ -17,7 +17,7 @@ test('production loads local artwork, lazy game, fonts, and audio without broken
     }
   });
   page.on('requestfailed', (request) => failures.push(new URL(request.url()).pathname));
-  await page.goto('./');
+  await page.goto('./#/demo');
   await page.evaluate(() => document.fonts.ready);
   await expect(page.getByRole('heading', { name: 'Adam & Hana' })).toBeVisible();
   await page.getByRole('button', { name: 'Music off', exact: true }).click();

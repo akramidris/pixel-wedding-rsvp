@@ -12,7 +12,7 @@ test('Retina canvas and compact minimap survive rotation without moving the gues
 }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('./');
+  await page.goto('./#/demo');
   await page.getByRole('button', { name: 'Enter Wedding', exact: true }).tap();
   await expect(page.locator('.loading-screen')).toBeHidden({ timeout: 15000 });
   await page.locator('.tutorial .primary').tap();

@@ -1,4 +1,4 @@
-import { weddingConfig as w } from '../config/wedding';
+import { useWeddingConfig } from '../context/WeddingContext';
 import { Icon } from './Icon';
 import { GardenPreview } from './GardenPreview';
 import { Countdown } from './Countdown';
@@ -13,10 +13,11 @@ export function StartScreen({
   music: boolean;
   onMusic: () => void;
 }) {
+  const w = useWeddingConfig();
   return (
     <div className="landing">
       <header className="site-header">
-        <a className="brand" href="#">
+        <a className="brand" href={window.location.href}>
           <span className="brand-icon">
             <Icon name="sprout" size={25} />
           </span>

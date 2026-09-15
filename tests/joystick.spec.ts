@@ -104,7 +104,7 @@ class Touches {
 }
 
 async function enter(page: Page) {
-  await page.goto('./');
+  await page.goto('./#/demo');
   await page.getByRole('button', { name: 'Enter Wedding', exact: true }).tap();
   await expect(page.locator('.loading-screen')).toBeHidden({ timeout: 15000 });
   await page.locator('.tutorial .primary').tap();
@@ -269,20 +269,39 @@ test.describe('analogue joystick on genuine touch input', () => {
   });
 
   test('full diagonal movement is not faster than full cardinal movement', async ({ page }) => {
+    // Phaser smooths/clamps frame deltas. Real wall-clock samples can therefore
+    // differ under software-GPU load even when both velocities are exactly 150.
+    // Control RAF time while still exercising actual touch input and physics.
+    await page.clock.install({ time: new Date('2026-01-01T00:00:00Z') });
     await enter(page);
+    await page.clock.pauseAt(new Date('2026-01-01T00:01:00Z'));
+    await page.clock.runFor(1000);
     const touches = new Touches(await page.context().newCDPSession(page));
+    const measure = async () => {
+      // Settle direction, then use four complete 128ms position-report periods.
+      await page.clock.runFor(256);
+      const before = await position(page);
+      await page.clock.runFor(512);
+      const after = await position(page);
+      const x = after.x - before.x,
+        y = after.y - before.y;
+      return { x, y, distance: Math.hypot(x, y) };
+    };
     try {
       const stick = await geometry(page);
       await touches.start(1, stick.point(0, -1));
-      const cardinal = await sampleMovement(page, 4);
+      const cardinal = await measure();
       await touches.move(1, stick.point(Math.SQRT1_2, -Math.SQRT1_2));
-      const diagonal = await sampleMovement(page, 4);
+      const diagonal = await measure();
+      expect(cardinal.distance).toBeGreaterThan(60);
+      expect(diagonal.distance).toBeGreaterThan(60);
       expect(diagonal.x / -diagonal.y).toBeCloseTo(1, 1);
-      expect(diagonal.speed / cardinal.speed).toBeGreaterThan(0.8);
-      expect(diagonal.speed / cardinal.speed).toBeLessThan(1.2);
+      expect(diagonal.distance / cardinal.distance).toBeGreaterThan(0.95);
+      expect(diagonal.distance / cardinal.distance).toBeLessThan(1.05);
       await touches.end(1);
     } finally {
       await touches.close();
+      await page.clock.resume();
     }
   });
 
@@ -305,8 +324,11 @@ test.describe('analogue joystick on genuine touch input', () => {
       await touches.move(2, stick.point(1, 0));
       await expectStopped(page);
       await touches.end(2);
-      await touches.start(3, stick.point(0, -1));
-      await sampleMovement(page, 3);
+      // Move away from the fountain: the first hold already approached it, so
+      // another upward hold could collide before three new positions arrive.
+      await touches.start(3, stick.point(0, 1));
+      const restarted = await sampleMovement(page, 3);
+      expect(restarted.y).toBeGreaterThan(5);
       await touches.cancel();
       await expectStopped(page);
     } finally {
@@ -441,7 +463,7 @@ test.describe('analogue collisions', () => {
 });
 
 test('desktop retains keyboard controls and hides the touch joystick', async ({ page }) => {
-  await page.goto('./');
+  await page.goto('./#/demo');
   await page.getByRole('button', { name: 'Enter Wedding', exact: true }).click();
   await expect(page.locator('.loading-screen')).toBeHidden({ timeout: 15000 });
   await page.locator('.tutorial .primary').click();

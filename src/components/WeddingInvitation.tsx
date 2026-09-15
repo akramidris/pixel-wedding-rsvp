@@ -1,10 +1,11 @@
-import { weddingConfig as w } from '../config/wedding';
+import { useWeddingConfig } from '../context/WeddingContext';
 import { Icon } from './Icon';
 export function WeddingInvitation({
   open,
 }: {
   open: (panel: 'venue' | 'schedule' | 'rsvp') => void;
 }) {
+  const w = useWeddingConfig();
   return (
     <div className="formal-invitation">
       <p className="bismillah" lang="ar" dir="rtl">
@@ -18,17 +19,29 @@ export function WeddingInvitation({
         {w.bride.fullName}
       </div>
       <p>{w.invitation.families}</p>
-      <div className="families">
-        <span>
-          {w.groom.father}
-          <br />& {w.groom.mother}
-        </span>
-        <Icon name="sprout" />
-        <span>
-          {w.bride.father}
-          <br />& {w.bride.mother}
-        </span>
-      </div>
+      {(w.groom.father || w.groom.mother || w.bride.father || w.bride.mother) && (
+        <div className="families">
+          <span>
+            {w.groom.father}
+            {w.groom.father && w.groom.mother && (
+              <>
+                <br />&{' '}
+              </>
+            )}
+            {w.groom.mother}
+          </span>
+          <Icon name="sprout" />
+          <span>
+            {w.bride.father}
+            {w.bride.father && w.bride.mother && (
+              <>
+                <br />&{' '}
+              </>
+            )}
+            {w.bride.mother}
+          </span>
+        </div>
+      )}
       <div className="invitation-details">
         <strong>{w.wedding.date}</strong>
         <span>{w.wedding.time}</span>

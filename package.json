@@ -8,17 +8,21 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "test": "playwright test",
+    "test:database": "node supabase/tests/run-database-tests.mjs",
     "format": "prettier --write src tests *.ts *.json *.md index.html .github"
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "^5.2.8",
     "@fontsource/dm-sans": "^5.2.8",
+    "@supabase/supabase-js": "^2.116.0",
     "lucide-react": "^0.468.0",
     "phaser": "^3.90.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.18.3"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@playwright/test": "^1.51.0",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",

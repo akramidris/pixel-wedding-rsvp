@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { drawGarden, ART_SCALE } from '../game/art/garden';
 import { drawCharacter } from '../game/art/characters';
-import { npcDialogue } from '../data/npcDialogue';
+import { npcPlacements } from '../data/npcDialogue';
 
 // Keep one deterministic composite for the page. Opening a map should copy a
 // bitmap, not redraw the garden's thousands of foliage and architectural marks.
@@ -13,7 +13,7 @@ function getPreviewSource() {
   const c = canvas.getContext('2d')!;
   c.save();
   c.setTransform(ART_SCALE, 0, 0, ART_SCALE, 0, 0);
-  for (const npc of npcDialogue) drawCharacter(c, npc.x - 16, npc.y - 24, npc.kind);
+  for (const npc of npcPlacements) drawCharacter(c, npc.x - 16, npc.y - 24, npc.kind);
   drawCharacter(c, 467, 664, 'guest');
   c.restore();
   previewSource = canvas;

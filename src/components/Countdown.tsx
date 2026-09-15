@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { weddingConfig } from '../config/wedding';
+import { useWeddingConfig } from '../context/WeddingContext';
 export function Countdown() {
+  const weddingConfig = useWeddingConfig();
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
     const id = window.setInterval(() => setNow(Date.now()), 1000);

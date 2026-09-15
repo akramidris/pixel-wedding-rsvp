@@ -1,0 +1,30 @@
+/* Customer themes tint invitation accents; the shared pixel artwork stays intact. */
+.wedding-experience {
+  display: contents;
+}
+
+.wedding-experience[data-wedding-theme='rose'] {
+  --sage: #91606e;
+  --dark: #6d4351;
+  --gold: #ac8463;
+  --line: #e9dce0;
+}
+
+.wedding-experience[data-wedding-theme='champagne'] {
+  --sage: #8c7047;
+  --dark: #6b5331;
+  --gold: #a88950;
+  --line: #e8deca;
+}
+
+.wedding-experience[data-wedding-theme='rose'] .primary:hover,
+.wedding-experience[data-wedding-theme='champagne'] .primary:hover {
+  background: var(--dark);
+}
+
+.wedding-experience[data-wedding-theme='rose'] .couple-names,
+.wedding-experience[data-wedding-theme='rose'] .hero-copy h1,
+.wedding-experience[data-wedding-theme='champagne'] .couple-names,
+.wedding-experience[data-wedding-theme='champagne'] .hero-copy h1 {
+  color: var(--dark);
+}

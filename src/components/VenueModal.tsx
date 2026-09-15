@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { weddingConfig as w } from '../config/wedding';
+import { useWeddingConfig } from '../context/WeddingContext';
 import { Icon } from './Icon';
 export function VenueModal() {
+  const w = useWeddingConfig();
   const [copied, setCopied] = useState(false),
     [error, setError] = useState('');
   const copy = async () => {

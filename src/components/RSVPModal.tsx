@@ -1,10 +1,15 @@
-import { useEffect, useState, type FormEvent } from 'react';
-import { weddingRepository } from '../services/storage';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useWedding } from '../context/WeddingContext';
 import { Icon } from './Icon';
 export function RSVPModal() {
+  const { config, repository } = useWedding();
+  const demo = repository.mode === 'demo';
+  const submitting = useRef(false);
+  const mounted = useRef(true);
   const [name, setName] = useState(''),
     [attending, setAttending] = useState(true),
     [guests, setGuests] = useState(1),
+    [phone, setPhone] = useState(''),
     [message, setMessage] = useState('');
   const [saved, setSaved] = useState(false),
     [error, setError] = useState(''),
@@ -12,13 +17,15 @@ export function RSVPModal() {
     [loading, setLoading] = useState(true);
   useEffect(() => {
     let active = true;
-    weddingRepository
+    mounted.current = true;
+    repository
       .getRSVP()
       .then((r) => {
         if (active && r) {
           setName(r.name);
           setAttending(r.attending);
-          setGuests(r.guests || 1);
+          setGuests(Math.min(r.guests || 1, config.settings.maxGuests));
+          setPhone(r.phone || '');
           setMessage(r.message);
         }
       })
@@ -30,26 +37,42 @@ export function RSVPModal() {
       });
     return () => {
       active = false;
+      mounted.current = false;
     };
-  }, []);
+  }, [repository, config.settings.maxGuests]);
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    if (submitting.current || loading) return;
+    submitting.current = true;
     setSaving(true);
     setError('');
     setSaved(false);
     try {
-      await weddingRepository.saveRSVP({ name, attending, guests, message });
-      setSaved(true);
+      if (!name.trim()) throw new Error('Please add your name.');
+      if (
+        attending &&
+        (!Number.isInteger(guests) || guests < 1 || guests > config.settings.maxGuests)
+      )
+        throw new Error(`Please choose 1 to ${config.settings.maxGuests} guests.`);
+      await repository.saveRSVP({ name, attending, guests, phone, message });
+      if (mounted.current) setSaved(true);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Your RSVP could not be saved.');
+      if (mounted.current)
+        setError(e instanceof Error ? e.message : 'Your RSVP could not be saved.');
     } finally {
-      setSaving(false);
+      submitting.current = false;
+      if (mounted.current) setSaving(false);
     }
   };
   return (
     <>
       <p className="modal-intro">We’d love to save a place for you.</p>
-      <form className="wedding-form" onSubmit={submit}>
+      {loading && (
+        <p className="storage-note" role="status">
+          Loading your response…
+        </p>
+      )}
+      <form className="wedding-form" onSubmit={submit} aria-busy={loading || saving}>
         <fieldset disabled={loading || saving}>
           <label>
             Guest name
@@ -103,7 +126,7 @@ export function RSVPModal() {
                   setSaved(false);
                 }}
               >
-                {[1, 2, 3, 4, 5].map((n) => (
+                {Array.from({ length: config.settings.maxGuests }, (_, i) => i + 1).map((n) => (
                   <option key={n} value={n}>
                     {n} {n === 1 ? 'guest' : 'guests'}
                   </option>
@@ -111,6 +134,20 @@ export function RSVPModal() {
               </select>
             </label>
           )}
+          <label>
+            Phone <span className="label-note">Optional</span>
+            <input
+              type="tel"
+              autoComplete="tel"
+              maxLength={30}
+              value={phone}
+              onChange={(e) => {
+                setPhone(e.target.value);
+                setSaved(false);
+              }}
+              placeholder="For a wedding-related update"
+            />
+          </label>
           <label>
             A little note <span className="label-note">Optional</span>
             <textarea
@@ -138,16 +175,21 @@ export function RSVPModal() {
           <div className="success" role="status">
             <Icon name="checks" size={20} />
             <span>
-              {attending
-                ? 'Your place is saved on this device. We can’t wait to celebrate with you!'
-                : 'Your response is saved. Thank you for keeping us in your prayers.'}
+              {demo
+                ? attending
+                  ? 'Your place is saved on this device. We can’t wait to celebrate with you!'
+                  : 'Your response is saved. Thank you for keeping us in your prayers.'
+                : attending
+                  ? 'Your RSVP has been sent to the couple. We can’t wait to celebrate with you!'
+                  : 'Your response has been sent to the couple. Thank you for keeping us in your prayers.'}
             </span>
           </div>
         )}
       </form>
       <p className="storage-note">
-        Your response is saved on this device. It isn’t sent to the couple yet. You can return here
-        to update it.
+        {demo
+          ? 'Your response is saved on this device. It isn’t sent to the couple yet. You can return here to update it.'
+          : 'Your response is shared privately with the couple. No guest account is needed.'}
       </p>
     </>
   );

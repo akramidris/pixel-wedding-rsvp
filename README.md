@@ -1,282 +1,211 @@
-# A Garden of Us
+# A Garden of Us — Wedding Platform
 
-A complete React + TypeScript + Phaser 3 wedding invitation: an original pixel
-garden, a modest Malay Muslim bride and groom, and a warm invitation interface.
-All artwork, fonts, and music are served locally. No game art is downloaded.
+One React + TypeScript + Vite application, one Phaser garden game, one Supabase
+project, and many independently owned weddings. The existing artwork, bride and
+groom, movement, analog joystick, interactions, music, invitation, venue, story,
+schedule, photo keepsake, and responsive design are retained.
 
-[Wedding website](https://akramidris.github.io/pixel-wedding-rsvp/) ·
-[GitHub repository](https://github.com/akramidris/pixel-wedding-rsvp) ·
-[Deployment runs](https://github.com/akramidris/pixel-wedding-rsvp/actions/workflows/deploy.yml)
+[Website](https://akramidris.github.io/pixel-wedding-rsvp/) ·
+[Repository](https://github.com/akramidris/pixel-wedding-rsvp) ·
+[Deployment](https://github.com/akramidris/pixel-wedding-rsvp/actions/workflows/deploy.yml)
 
-## Local Development
+**Hosted Supabase has not been connected yet.** The code, database migration,
+security policies, editor, and dashboards are ready for setup. Until the required
+environment values and database are configured, real invitation routes show an
+unavailable state and sign-in is disabled. They never pretend to save real RSVPs
+locally. The `/demo` route remains an explicitly labelled sample experience whose
+sample responses stay on the device.
 
-Install **Node.js 22.12 or newer**, then open this folder in a terminal:
+## First deployment setup
+
+1. Create or choose **one Supabase project**. Apply the complete
+   [migration](supabase/migrations/202609150001_platform_foundation.sql) once in
+   its SQL Editor. All four platform table names must be available. See
+   [database setup](docs/database.md) for the exact steps and existing-data precautions.
+2. In Supabase Authentication, create an email/password administrator account.
+   Promote only that account using the exact trusted SQL in
+   [database setup](docs/database.md#create-the-first-administrator). Customers
+   receive the `customer` role automatically. Create their email/password accounts
+   in Supabase and assign wedding owners in the admin editor.
+3. Optionally run [seed.sql](supabase/seed.sql) after creating the administrator.
+   It creates two distinct active demo weddings without overwriting existing slugs.
+4. In this GitHub repository, open **Settings → Secrets and variables → Actions**.
+   Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, using the project's URL
+   and public anon/publishable key. These values are public browser configuration;
+   never substitute a service-role/secret key, database password, or signing secret.
+5. Run **Actions → Deploy wedding to GitHub Pages → Run workflow**. Open
+   `#/login`, sign in, create an active wedding, and share its invitation link.
+
+GitHub Pages is already configured for this repository's Actions deployment.
+Each newly created or edited wedding is stored in Supabase and needs **no code
+change, new repository, new branch, or new deployment**. Only frontend/configuration
+changes require deployment.
+
+This initial authentication UI supports email/password sign-in and logout.
+Account provisioning and password resets are handled administratively; email
+invitation/recovery callback pages and public self-registration are not included.
+
+## Local development
+
+Install Node.js 22.12 or newer, then:
 
 ```sh
-npm install
+npm ci
+```
+
+Copy `.env.example` to `.env.local` and supply the same public values:
+
+```dotenv
+VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+VITE_SUPABASE_ANON_KEY=YOUR_PUBLIC_ANON_OR_PUBLISHABLE_KEY
+VITE_ROUTER_MODE=hash
+```
+
+```sh
 npm run dev
 ```
 
-Open the local URL Vite prints (normally http://localhost:5173). To test on your
-phone, use your computer's LAN IP with port 5173 while both devices are on the
-same Wi-Fi. The development server listens on all interfaces.
+The game preview works without Supabase at `http://localhost:5173/#/demo`.
+For a phone on the same Wi-Fi, open your computer's LAN address at port 5173.
+On PowerShell, use `npm.cmd` if execution policy blocks `npm.ps1`.
 
-## Production Build
+`.env`, `.env.local`, other `.env.*` files, credentials, dependencies, builds,
+test artifacts, and local backups are ignored by Git. `.env.example` contains no
+credentials. A build-time guard rejects privileged Supabase keys before Vite
+can inline them into the public JavaScript bundle.
 
-```sh
-npm run build
-npm run preview
-```
+## Routes
 
-The production website is generated in `dist/`. Do not open `index.html` directly
-from the filesystem; use the development or preview server.
+GitHub Pages uses hash routing because it cannot rewrite arbitrary SPA paths.
+The repository base remains `/pixel-wedding-rsvp/`.
 
-On Windows, use `npm.cmd` if PowerShell blocks the `npm.ps1` wrapper. Node.js,
-Git, and GitHub CLI should be installed and available on your terminal's PATH.
+| Route after `#`                         | Purpose                                            |
+| --------------------------------------- | -------------------------------------------------- |
+| `/`                                     | Platform home                                      |
+| `/demo`                                 | Original sample garden; device-only sample storage |
+| `/wedding/:slug`                        | Active wedding from Supabase; no guest login       |
+| `/login`                                | Supabase email/password authentication             |
+| `/dashboard`                            | Authenticated customer's own weddings              |
+| `/dashboard/weddings/:weddingId/edit`   | Owner content editor                               |
+| `/dashboard/weddings/:weddingId/rsvp`   | Guest list, totals, filters, search, CSV           |
+| `/dashboard/weddings/:weddingId/wishes` | Approve/hide wishes                                |
+| `/admin`                                | Administrator overview and all weddings            |
+| `/admin/weddings/new`                   | Create and assign a wedding                        |
+| `/admin/weddings/:weddingId/edit`       | Admin content, owner, slug, status, expiry         |
 
-## Personalise your wedding
+Demo URLs after database setup:
 
-Edit **`src/config/wedding.ts`**. This is the single source for names, family
-members, invitation wording, story timeline, date, schedule, location, map URLs,
-contact numbers, and music. The included Adam & Hana wedding and venue details
-are sample content. Replace them before sharing.
+- [Akram & Aisyah](https://akramidris.github.io/pixel-wedding-rsvp/#/wedding/akram-aisyah)
+- [Amir & Nurul](https://akramidris.github.io/pixel-wedding-rsvp/#/wedding/amir-nurul)
 
-- Keep `isoDate` and `endDate` ISO 8601 values with the correct UTC offset.
-  The countdown and calendar download use these timestamps.
-- Change the formatted date, time, and timezone labels alongside those timestamps.
-- Replace both navigation URLs with links to your exact venue.
-- Optional contact numbers produce telephone links in the venue card.
-- Use a unique `storageKey` for a different wedding.
-- Music is off by default. Selecting music on at the landing screen expresses a
-  preference; playback starts only after clicking **Enter Wedding**.
-- Replace `public/audio/garden-melody.wav` and update `music.src` if desired.
-- Update the static social description/title in `index.html` if you want custom
-  search previews. Visible wedding details all come from the configuration.
+On hosting with SPA rewrites, set `VITE_ROUTER_MODE=browser`, configure all
+application paths to serve `index.html`, and set the correct `PAGES_BASE_PATH`.
+The same route definitions then use clean `/wedding/:slug` URLs.
 
-## Explore
-
-- **WASD / arrow keys**: walk, with animated movement in four directions.
-- **E / Enter / Space**: interact when close to a person or place.
-- **M**: toggle the village map.
-- **Escape**: open the pause menu; close an open card.
-- Touchscreen: drag the analog joystick at bottom left; **A** interacts at bottom right.
-  Small drags stroll, full drags reach normal speed, and release stops immediately.
-  The joystick has a 15% radial dead zone and supports a second finger on A or the menu.
-- The top toolbar provides map, music/volume, fullscreen, and the wedding menu.
-- The map and menu give direct access to details for guests who prefer reading.
-- Movement pauses while cards are open or the window loses focus. Forms accept
-  normal typing, including spaces and arrow-key navigation.
-
-Eight places to discover: Welcome Garden, Invitation Pavilion, Our Story,
-Date & Time, Wedding Hall, Pelamin, Wishing Tree, and RSVP Counter. Ten NPCs
-welcome visitors. Collision boundaries protect trees, furniture, hall, fountain,
-fences, and NPCs. The camera follows the guest through the garden.
-
-At the pelamin, **Take Photo** creates an illustrated PNG keepsake containing
-the guest and the couple. This is a composed photo frame, not a live camera
-capture. Guests can download it. The schedule also provides an `.ics` calendar.
-
-## Guestbook and RSVP storage
-
-This MVP uses **localStorage on the guest's device**. Wishes and the latest RSVP
-persist after a reload in the same browser. They are **not sent to the couple**,
-shared with other guests, or synchronised across devices. This is disclosed on
-the forms. Declined RSVPs save zero guests. Empty/whitespace-only entries are
-rejected; messages are bounded and rendered as plain text. Storage errors are
-shown without claiming a successful submission.
-
-To receive real responses, implement `WeddingRepository` in
-`src/services/storage.ts` using your backend and replace the exported repository.
-The React components already use asynchronous methods:
-
-```ts
-interface WeddingRepository {
-  getWishes(): Promise<Wish[]>;
-  addWish(name: string, message: string): Promise<Wish>;
-  getRSVP(): Promise<RSVP | null>;
-  saveRSVP(rsvp: Omit<RSVP, 'createdAt'>): Promise<RSVP>;
-}
-```
-
-For Supabase/Firebase, enforce field validation and access rules on the server,
-keep administrative credentials off the client, add spam/rate protection, and
-decide whether wishes require moderation. Add a guest/session identifier to
-retrieve and update each guest's RSVP. Remove the local-only wording once the
-connected service is implemented and tested. Clear only your wedding's prefixed
-keys if you wish to reset sample responses.
-
-## Project structure
+## Data flow and boundaries
 
 ```text
-src/
-  config/wedding.ts          Central wedding configuration
-  components/               Landing, cards, forms, map, music, mobile controls
-  data/npcDialogue.ts        Family and guest dialogue
-  game/
-    art/garden.ts           Original canvas pixel tiles, architecture, sprites
-    entities/               Animated Player and collidable NPCs
-    scenes/WeddingScene.ts  Phaser scene and world assembly
-    systems/                Proximity and interaction system
-    bridge.ts               Typed React ↔ Phaser event bridge
-    world.ts                World dimensions and destination coordinates
-    createGame.ts           Responsive Phaser game boot
-  services/storage.ts       Replaceable asynchronous persistence adapter
-  App.tsx                   Invitation/game state and overlay routing
-  styles.css                Responsive ivory, sage, gold, and rose UI
-public/audio/               Original locally served instrumental loop
-scripts/generate-audio.py   Reproducible music generation (optional)
-tests/                     Browser integration tests
+Wedding URL → WeddingPage → public wedding service → Supabase RPC
+            → validated WeddingConfig → WeddingProvider → React + Phaser
+
+Guest forms → repository bound to wedding UUID → restricted Supabase RPC
+Dashboard   → verified Auth session → Supabase tables protected by RLS
 ```
 
-Phaser and the game are lazy-loaded after entry. Pixel textures are generated
-once, with nearest-neighbour rendering and small sprite sheets. The minimap
-receives position updates at about 8 Hz; React is not updated each game frame.
-All font files are bundled from Fontsource packages. There are no external CDN
-requests. Navigation opens external apps only after the guest clicks a link.
+Wedding data loads when its route opens, never every game frame. Phaser receives
+configuration and never queries the database. Switching weddings tears down the
+old scene, audio, input and form state. The sample config in `src/config/wedding.ts`
+is used only for the preview and generic presentation defaults, not customer data.
 
-Keyboard focus is trapped in invitation dialogs, background scrolling is locked,
-and controls have accessible names. An alternative map/menu path exposes every
-piece of information without requiring movement. Reduced-motion CSS is supported.
+The editor supports couple names, date/time, venue, HTTPS map links, story,
+schedule, theme and music. Admins additionally control owner, slug, status and
+expiration. The original `garden` template is shared by every wedding; sage,
+rose and champagne themes adjust interface accents. Times default to Malaysia
+time (`+08:00`); advanced public settings are described in [database setup](docs/database.md).
 
-## Browser tests
+RSVPs include the correct immutable `wedding_id`, attendance, count, name, optional
+phone and message. A random device token permits retrieving/updating only that
+device's response to that wedding; retries do not duplicate it. Only these
+tokens and tutorial preferences are stored locally for real weddings. Clearing
+browser storage or switching devices loses that response-editing capability.
+Guests never gain access to the full guest list.
+
+New wishes await approval. The public guestbook only receives approved wishes.
+Wish retries use an idempotency token. Owners can approve/hide their own wedding's
+wishes. Dashboard exports page through all authorized records, quote CSV cells,
+and neutralize spreadsheet formula prefixes.
+
+Draft/unknown invitations are not publicly discoverable. Active unexpired
+weddings are playable and accept responses. Archived and expired weddings show
+graceful closed states; their records are retained. The database enforces these
+rules even if a page was opened before the wedding closed.
+
+## Explore the garden
+
+- **WASD / arrow keys:** walk.
+- **E / Enter / Space:** interact nearby.
+- **M:** village map. **Escape:** menu/close card.
+- **Touch:** drag the bottom-left analog joystick; bottom-right **A** interacts.
+  Short drags stroll, full drags reach normal speed, and release stops immediately.
+- Cards and dashboard forms scroll normally. Movement pauses while a card is
+  open. Safe areas, portrait/landscape layouts and Retina canvas sizing remain.
+- The map/menu also gives direct access to information without walking.
+- Music is off by default and starts only with guest consent. Fonts, default
+  audio, and pixel art are local; optional customer music uses an HTTPS URL.
+
+See [joystick notes](docs/mobile-joystick.md) and the earlier
+[visual improvements](docs/visual-improvements.md).
+
+## Verification
 
 ```sh
+npm run test:database
 npx playwright install chromium
 npm test
+npm run build
 ```
 
-Tests launch the local development server automatically and cover the landing,
-game loading, keyboard movement, paused form input, guestbook/RSVP persistence,
-navigation, calendar/photo downloads, map, and mobile layout/controls.
+Database tests apply the real migration to isolated PostgreSQL via PGlite with
+Supabase Auth role shims. They exercise RLS, privileges, tokens, expiry, validation,
+owner/admin boundaries, and two-wedding seed replay. They do not replace a final
+smoke test against your hosted Supabase project.
 
-Analog touch tests also cover gradual speed, arbitrary angles, normalized
-diagonals, multi-touch, release/cancellation, rotation, and collision. See
-[mobile joystick notes](docs/mobile-joystick.md) for input tuning and layout details.
+Browser tests use the actual Supabase JS client with isolated HTTP fixtures for
+the platform journeys. Their fake URL/key is injected only into the development
+test server; it is not a deployment configuration or fake application auth mode.
+Database security is tested separately with actual SQL, not inferred from those
+HTTP fixtures. The existing garden controls and features have regression tests.
 
-The same suite can check a production build under a GitHub Pages-style prefix.
-For example, in PowerShell (the prefix below is only a local test value):
+For the compiled GitHub Pages build in PowerShell:
 
 ```powershell
-$env:PAGES_BASE_PATH = '/pages-check/'
-npm run build
+$env:PAGES_BASE_PATH = '/pixel-wedding-rsvp/'
+npm.cmd run build
 $env:TEST_PRODUCTION = '1'
-npm test
+npm.cmd test
 Remove-Item Env:TEST_PRODUCTION
 Remove-Item Env:PAGES_BASE_PATH
 ```
 
-This starts `npm run preview` on port 4175 and visits `/pages-check/`, verifying
-the actual compiled website instead of the development server. Rebuild normally
-after removing the test prefix if you want a standard local preview.
+Fixture-dependent platform browser tests are skipped for this real production
+configuration. The compiled game, asset paths and existing controls still run.
+Do not run builds while a production preview test is reading `dist/`.
 
-## Environment Variables
+## Deployment and next operational work
 
-**None are required. No GitHub repository secrets are needed for this version.**
-There is no Supabase SDK, client, or active Supabase configuration. RSVP and wishes
-continue to use localStorage on each guest's device; deploying to Pages does not
-turn these into shared submissions.
+Push verified changes to `main`. The existing workflow installs locked dependencies,
+runs the PostgreSQL security suite, builds with Pages metadata and the two public
+Supabase settings, then deploys `dist/`. Never commit `dist/`, `node_modules`, or
+private credentials. There are no payments, subscriptions or payment APIs.
 
-`.env.example` documents optional settings without containing credentials.
-`.env` and all `.env.*` files except `.env.example` are ignored by Git.
+Before accepting real customers, finish hosted setup and verify an actual admin
+login, wedding creation, anonymous RSVP, dashboard receipt and moderation. Add
+appropriate abuse controls/rate limits or CAPTCHA at the submission boundary,
+privacy/retention procedures and backups, and a password recovery workflow.
+Anonymous database functions enforce tenancy and status, but are not a complete
+anti-spam service. Verify the controls on physical Android/iPhone devices;
+automated phone testing uses browser emulation.
 
-- `PAGES_BASE_PATH`: optional **build-process environment variable**, for example
-  `/your-repository/` or `/`. The workflow supplies it from GitHub Pages metadata.
-  Set this in your shell or hosting environment; it is not a frontend `VITE_*`
-  variable and is not read from a local `.env` file.
-- `GITHUB_REPOSITORY`: provided automatically by GitHub Actions (`owner/repo`).
-  It is a fallback for deriving the base path, not a secret.
-- `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`: **not currently used**. These
-  would only be needed after adding a Supabase adapter. At that point, set the
-  two public values as repository secrets and explicitly pass them to the build
-  step's `env`. All `VITE_*` values are public in the compiled site, even when
-  their build-time source is a GitHub Secret. Never pass a service-role key,
-  database password, or private API credential to the frontend build.
-
-GitHub automatically supplies the workflow's scoped `GITHUB_TOKEN`; do not add
-a personal access token as a repository secret for this deployment.
-
-## Deploy
-
-The application is a static website. No backend or server is needed for the
-local-storage version. Vite derives the production base path from Pages metadata,
-then an existing custom-domain CNAME, `GITHUB_REPOSITORY`, or the GitHub `origin`
-remote. With none of these available it uses portable relative asset URLs (`./`).
-Local development stays at `/`. No React Router is installed, so no HashRouter
-conversion or refresh workaround is necessary.
-
-### Vercel
-
-Push this project to a repository, import it into Vercel, select **Vite**, set
-the build command to `npm run build`, and the output directory to `dist`.
-Use Node 22 or newer, then deploy. No SPA route rewrite is needed because this
-project uses state-based screens rather than URL routes.
-
-### Netlify
-
-Import your repository. Set **Build command** to `npm run build` and
-**Publish directory** to `dist`, with Node 22 or newer. Alternatively, run the
-build locally and drag the `dist` folder into Netlify's manual deploy interface.
-
-## GitHub Pages Deployment
-
-This project uses **`akramidris/pixel-wedding-rsvp`**, with `main` as the deployment
-branch and `https://github.com/akramidris/pixel-wedding-rsvp.git` as `origin`.
-Fetch and preserve existing history before adding changes from another checkout.
-Never force-push this deployment.
-
-1. In the repository, open **Settings → Pages → Build and deployment → Source**
-   and select **GitHub Actions**. GitHub Actions must also be allowed for the repo.
-2. Push the verified source to `main`. The included
-   [deployment workflow](.github/workflows/deploy.yml) runs automatically on
-   pushes to `main`; it can also be run from **Actions → Deploy wedding to GitHub
-   Pages → Run workflow**. If the existing repository uses a different default
-   branch, update the workflow's push branch to that branch before pushing.
-3. The workflow checks out the code, sets up Node 22, reads Pages metadata, runs
-   `npm ci` and `npm run build`, uploads only `dist`, and deploys using the
-   `github-pages` environment. Official actions are pinned to commit SHAs.
-4. Open the deployment URL shown in the successful Actions run. Check both the
-   build job and deploy job; a successful local build alone does not mean the
-   public website has been published.
-
-The workflow grants `contents: read`, `pages: write`, and `id-token: write` and
-uses the official artifact-based Pages deployment. `dist` and `node_modules` are
-not committed. If the repository's environment protection requires approval,
-approve the `github-pages` deployment in GitHub.
-
-For CLI authentication, sign in locally:
-
-```powershell
-gh auth login --hostname github.com --git-protocol https --web --scopes workflow
-gh auth setup-git
-```
-
-## GitHub Pages URL
-
-**https://akramidris.github.io/pixel-wedding-rsvp/**
-
-- Repository site: `https://USERNAME.github.io/REPOSITORY-NAME/`.
-- A repository named `USERNAME.github.io`: `https://USERNAME.github.io/`.
-
-The workflow obtains the actual base path from `actions/configure-pages`, so it does
-not hardcode a sample repository name. Fonts are bundled by Vite; pixel art and
-sprites are generated locally; music uses `import.meta.env.BASE_URL`. No asset
-depends on a hardcoded root `/assets/` path.
-
-For a future custom domain, configure the real domain and its DNS in Pages
-settings, then rerun the workflow. Pages metadata supplies the root base path.
-No fake domain or `CNAME` file is included.
-
-Before sharing, replace sample wedding/venue information, verify navigation
-links, and connect the repository adapter if you want to actually collect
-guest responses. Test on your target phones; 60 FPS is a design target, not a
-guarantee for every device. Fullscreen support depends on the browser, especially
-on iPhone. The game remains usable in the regular browser viewport.
-
-## Implementation references
-
-- [Vite guide](https://vite.dev/guide/)
-- [Vite GitHub Pages deployment](https://vite.dev/guide/static-deploy#github-pages)
-- [GitHub custom Pages workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
-- [Phaser Arcade Physics](https://docs.phaser.io/phaser/concepts/physics/arcade)
-
-These are development references; the website does not request them at runtime.
+References: [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security),
+[Supabase Auth](https://supabase.com/docs/reference/javascript/auth-onauthstatechange),
+[React Router HashRouter](https://reactrouter.com/api/declarative-routers/HashRouter).

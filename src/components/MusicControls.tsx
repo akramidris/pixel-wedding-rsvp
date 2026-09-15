@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { weddingConfig } from '../config/wedding';
+import { useWeddingConfig } from '../context/WeddingContext';
 import { Icon } from './Icon';
 export function useMusic() {
+  const weddingConfig = useWeddingConfig();
   const [enabled, setEnabled] = useState(false),
     [volume, setVolume] = useState<number>(weddingConfig.music.defaultVolume),
     [error, setError] = useState('');
@@ -9,15 +10,17 @@ export function useMusic() {
     started = useRef(false);
   const getAudio = useCallback(() => {
     if (!audio.current) {
-      audio.current = new Audio(`${import.meta.env.BASE_URL}${weddingConfig.music.src}`);
+      const base = new URL(import.meta.env.BASE_URL, window.location.origin);
+      audio.current = new Audio(new URL(weddingConfig.music.src, base).href);
       audio.current.loop = true;
     }
     return audio.current;
-  }, []);
+  }, [weddingConfig.music.src]);
   const play = useCallback(() => {
     const a = getAudio();
     a.volume = volume;
     void a.play().catch(() => {
+      if (audio.current !== a) return;
       setError('Music could not play. Tap the music button to try again.');
       setEnabled(false);
     });
@@ -41,17 +44,29 @@ export function useMusic() {
   }, [volume]);
   useEffect(
     () => () => {
-      audio.current?.pause();
+      const previousAudio = audio.current;
+      audio.current = null;
+      started.current = false;
+      if (previousAudio) {
+        previousAudio.pause();
+        previousAudio.removeAttribute('src');
+        previousAudio.load();
+      }
     },
-    [],
+    [weddingConfig.music.src],
   );
   return { enabled, volume, setVolume, toggle, enter, error };
 }
 export function MusicControls({ music }: { music: ReturnType<typeof useMusic> }) {
+  const weddingConfig = useWeddingConfig();
   return (
     <div className="music-panel">
       <Icon name="music" size={45} />
-      <p>A gentle original melody for your garden stroll.</p>
+      <p>
+        {weddingConfig.music.src === 'audio/garden-melody.wav'
+          ? 'A gentle original melody for your garden stroll.'
+          : 'A melody chosen for this celebration.'}
+      </p>
       <button className="secondary" onClick={music.toggle}>
         <Icon name={music.enabled ? 'volume' : 'muted'} />
         Music {music.enabled ? 'on' : 'off'}

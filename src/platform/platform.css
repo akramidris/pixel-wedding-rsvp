@@ -1,0 +1,987 @@
+.platform-page {
+  --studio-paper: #fffdf7;
+  --studio-bg: #f4f3ec;
+  --studio-ink: #334838;
+  --studio-muted: #6f7768;
+  --studio-line: #dedfd3;
+  --studio-sage: #526e54;
+  width: 100%;
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--studio-bg);
+  color: var(--studio-ink);
+  font:
+    400 14px/1.6 'DM Sans',
+    sans-serif;
+  touch-action: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.platform-page *,
+.platform-page *::before,
+.platform-page *::after {
+  box-sizing: border-box;
+}
+.platform-page h1,
+.platform-page h2,
+.platform-page h3,
+.platform-page p {
+  margin: 0;
+}
+.platform-page h1,
+.platform-page h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 500;
+  color: var(--studio-ink);
+}
+.platform-page h1 {
+  font-size: clamp(34px, 4.3vw, 54px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+.platform-page h2 {
+  font-size: 29px;
+  line-height: 1.2;
+}
+.platform-page h3 {
+  font:
+    600 15px/1.4 'DM Sans',
+    sans-serif;
+}
+.platform-page button,
+.platform-page a {
+  touch-action: manipulation;
+}
+.platform-page button,
+.platform-page input,
+.platform-page select,
+.platform-page textarea {
+  font-family: inherit;
+}
+.platform-page a {
+  color: var(--studio-sage);
+  text-decoration: none;
+}
+.platform-page a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.platform-page :focus-visible {
+  outline: 2px solid #967d4e;
+  outline-offset: 3px;
+}
+.platform-page button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.platform-nav {
+  min-height: 88px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 18px clamp(20px, 5vw, 64px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid var(--studio-line);
+}
+.platform-page .platform-brand {
+  display: flex;
+  flex-direction: column;
+  color: var(--studio-ink);
+  font:
+    500 26px/1.1 'Cormorant Garamond',
+    Georgia,
+    serif;
+  white-space: nowrap;
+}
+.platform-brand span {
+  margin-top: 5px;
+  font:
+    600 9px/1.3 'DM Sans',
+    sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #847454;
+}
+.platform-nav-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px 24px;
+  font-size: 13px;
+}
+.platform-nav-links > a:not(.platform-button) {
+  padding: 10px 0;
+}
+.platform-container {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 44px 32px max(60px, env(safe-area-inset-bottom));
+}
+.platform-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  margin-bottom: 34px;
+}
+.platform-hero > div:first-child {
+  min-width: 0;
+  max-width: 780px;
+}
+.platform-page .platform-eyebrow,
+.platform-page .eyebrow {
+  display: block;
+  font:
+    600 10px/1.6 'DM Sans',
+    sans-serif;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: #89754f;
+  margin-bottom: 11px;
+}
+.platform-page .platform-description,
+.platform-hero > div > p:not(.platform-eyebrow) {
+  max-width: 640px;
+  margin-top: 13px;
+  color: var(--studio-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.platform-hero > .platform-actions {
+  flex-shrink: 0;
+}
+.platform-grid,
+.platform-wedding-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.platform-grid {
+  margin-top: 24px;
+}
+.platform-card {
+  min-width: 0;
+  padding: 28px;
+  border: 1px solid var(--studio-line);
+  border-radius: 18px;
+  background: var(--studio-paper);
+  box-shadow: 0 3px 14px #35463505;
+}
+.platform-card > h2 + p,
+.platform-card > h1 + p {
+  margin-top: 12px;
+}
+.platform-card > p + .platform-button {
+  margin-top: 22px;
+}
+.platform-card > .platform-button + p {
+  margin-top: 18px;
+}
+.platform-card > .platform-muted {
+  margin-top: 6px;
+}
+.platform-card-heading,
+.platform-section-heading,
+.platform-repeater-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.platform-card-heading {
+  margin-bottom: 20px;
+}
+.platform-section-heading {
+  margin-bottom: 24px;
+}
+.platform-section-heading .platform-muted {
+  margin-top: 5px;
+}
+.platform-section-heading > div:first-child {
+  min-width: 0;
+}
+.platform-page .platform-muted,
+.platform-page .platform-help {
+  color: var(--studio-muted);
+}
+.platform-page .platform-help {
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: -4px;
+}
+.platform-monogram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font:
+    500 24px/1 'Cormorant Garamond',
+    Georgia,
+    serif;
+  color: #617658;
+}
+.platform-page .theme-sage {
+  background: #e6ecdf;
+}
+.platform-page .theme-rose {
+  background: #f0e2de;
+  color: #956958;
+}
+.platform-page .theme-champagne {
+  background: #eee6d3;
+  color: #8e794c;
+}
+.platform-wedding-card > h2 {
+  font-size: 34px;
+  overflow-wrap: anywhere;
+}
+.platform-date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px !important;
+  font-size: 13px;
+}
+.platform-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.platform-badge.status-active {
+  background: #e2ebdc;
+  color: #496343;
+}
+.platform-badge.status-draft {
+  background: #f1e9d8;
+  color: #8c7242;
+}
+.platform-badge.status-archived {
+  background: #ecece6;
+  color: #687066;
+}
+.platform-badge.status-expired {
+  background: #f2e3de;
+  color: #96604d;
+}
+.platform-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  margin: 0 0 28px;
+  padding: 0;
+  border: 1px solid var(--studio-line);
+  border-radius: 16px;
+  background: #fafaf4;
+  overflow: hidden;
+}
+.platform-stats > div {
+  padding: 22px;
+  min-width: 0;
+  border-right: 1px solid var(--studio-line);
+}
+.platform-stats > div:last-child {
+  border-right: 0;
+}
+.platform-stats dt {
+  color: var(--studio-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.platform-stats dd {
+  margin: 7px 0 0;
+  color: var(--studio-ink);
+  font-size: 29px;
+  font-weight: 500;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+.platform-wedding-card .platform-stats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 22px 0;
+  border-radius: 12px;
+}
+.platform-wedding-card .platform-stats > div {
+  padding: 15px 18px;
+}
+.platform-wedding-card .platform-stats > div:nth-child(2) {
+  border-right: 0;
+}
+.platform-wedding-card .platform-stats > div:nth-child(-n + 2) {
+  border-bottom: 1px solid var(--studio-line);
+}
+.platform-wedding-card .platform-stats dd {
+  font-size: 25px;
+}
+.platform-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.platform-page .platform-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #cfd4c3;
+  border-radius: 9px;
+  background: #fffdf7;
+  color: #4e644d;
+  box-shadow: none;
+  font:
+    500 12px/1.4 'DM Sans',
+    sans-serif;
+  text-decoration: none;
+  text-align: center;
+  white-space: normal;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.platform-page .platform-button:hover:not(:disabled) {
+  background: #f0f2e8;
+  border-color: #aab79c;
+  text-decoration: none;
+  transform: none;
+}
+.platform-page .platform-button.primary {
+  color: #fffdf3;
+  background: var(--studio-sage);
+  border-color: var(--studio-sage);
+}
+.platform-page .platform-button.primary:hover:not(:disabled) {
+  background: #415d44;
+}
+.platform-page .platform-button.quiet {
+  padding-left: 9px;
+  padding-right: 9px;
+  background: transparent;
+  border-color: transparent;
+}
+.platform-page .platform-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.platform-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 14px;
+  border-top: 1px solid var(--studio-line);
+  padding-top: 10px;
+}
+.platform-link-field {
+  display: block;
+  margin-top: 12px;
+}
+.platform-link-field span {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 10px;
+  color: var(--studio-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.platform-page .platform-link-field input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #e5e6dc;
+  border-radius: 6px;
+  font-size: 11px;
+  background: #f7f7f0;
+  color: #65725d;
+}
+.platform-page .platform-loading {
+  padding: 34px 20px;
+  color: var(--studio-muted);
+  text-align: center;
+  font-size: 13px;
+}
+.platform-page .platform-alert {
+  margin: 0 0 22px;
+  padding: 15px 18px;
+  border: 1px solid #e5c8bd;
+  border-radius: 10px;
+  background: #fff1ea;
+  color: #884e3f;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.platform-page .platform-alert p {
+  margin: 0;
+}
+.platform-alert .platform-button {
+  margin-top: 8px;
+}
+.platform-page .platform-feedback {
+  padding: 12px 16px;
+  margin: 0 0 18px;
+  border: 1px solid #ccdcc0;
+  border-radius: 9px;
+  background: #edf4e6;
+  color: #4d6b41;
+  font-size: 13px;
+}
+.platform-wedding-card .platform-feedback {
+  margin: 12px 0;
+}
+.platform-empty {
+  padding: 48px 28px;
+  text-align: center;
+  color: var(--studio-muted);
+  border: 1px dashed #d2d8c8;
+  border-radius: 14px;
+  background: #fafaf5;
+}
+.platform-empty svg {
+  color: #9bab8b;
+  margin-bottom: 14px;
+}
+.platform-empty h2,
+.platform-empty h3 {
+  color: #53674f;
+}
+.platform-empty p {
+  max-width: 450px;
+  margin: 10px auto 0;
+  line-height: 1.75;
+  font-size: 13px;
+}
+.platform-empty-inline {
+  margin: 0 0 20px !important;
+  color: var(--studio-muted);
+  font-size: 13px;
+}
+
+.platform-toolbar {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 14px;
+}
+.platform-toolbar .platform-field:first-child {
+  flex: 1;
+}
+.platform-toolbar .platform-field:last-child:not(:first-child) {
+  width: 210px;
+}
+.platform-page .platform-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+  margin: 0 0 18px;
+  color: #52634c;
+  font-size: 12px;
+  font-weight: 500;
+}
+.platform-page .platform-field input,
+.platform-page .platform-field select,
+.platform-page .platform-field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 45px;
+  margin: 0;
+  padding: 11px 12px;
+  border: 1px solid #d6dacc;
+  border-radius: 8px;
+  background: #fffefa;
+  color: #384c3b;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.45;
+  box-shadow: none;
+}
+.platform-page .platform-field textarea {
+  resize: vertical;
+  min-height: 80px;
+  touch-action: pan-y;
+}
+.platform-page .platform-field input::placeholder,
+.platform-page .platform-field textarea::placeholder {
+  color: #8c9584;
+}
+.platform-page .platform-field input:focus,
+.platform-page .platform-field select:focus,
+.platform-page .platform-field textarea:focus {
+  border-color: #8ba17a;
+  outline: 2px solid #c9d7bd;
+  outline-offset: 1px;
+}
+.platform-page .platform-field input[type='date'],
+.platform-page .platform-field input[type='time'],
+.platform-page .platform-field input[type='datetime-local'] {
+  min-width: 0;
+  appearance: auto;
+}
+.platform-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-top: 1px solid var(--studio-line);
+  touch-action: pan-x pan-y;
+}
+.platform-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  text-align: left;
+}
+.platform-table th {
+  padding: 14px 14px;
+  color: #728065;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: #f5f6ed;
+  white-space: nowrap;
+}
+.platform-table td {
+  padding: 18px 14px;
+  vertical-align: top;
+  border-top: 1px solid #e8e9df;
+  min-width: 105px;
+}
+.platform-table th:first-child,
+.platform-table td:first-child {
+  padding-left: 12px;
+}
+.platform-table strong {
+  display: block;
+  font-weight: 600;
+  min-width: 140px;
+  overflow-wrap: anywhere;
+}
+.platform-table small {
+  display: block;
+  margin-top: 4px;
+  color: var(--studio-muted);
+  font-size: 11px;
+}
+.platform-table .platform-message-cell {
+  min-width: 210px;
+  max-width: 360px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.platform-nowrap {
+  white-space: nowrap;
+}
+.platform-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  align-items: center;
+}
+.platform-row-actions > a {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+}
+.platform-page .platform-result-count {
+  color: var(--studio-muted);
+  font-size: 11px;
+  margin: 0 0 12px;
+}
+.platform-wishes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.platform-wish {
+  min-width: 0;
+  padding: 23px;
+  border: 1px solid #e0e3d6;
+  border-radius: 12px;
+  background: #fafaf3;
+}
+.platform-wish .platform-section-heading {
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.platform-wish h3 {
+  overflow-wrap: anywhere;
+}
+.platform-wish time {
+  display: block;
+  margin-top: 4px;
+  color: var(--studio-muted);
+  font-size: 10px;
+}
+.platform-wish > p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.75;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.platform-form {
+  width: 100%;
+}
+.platform-page .platform-form > fieldset,
+.platform-page .platform-editor-fields {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.platform-editor-fields > .platform-card {
+  margin-bottom: 24px;
+}
+.platform-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 20px;
+}
+.platform-form-grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.platform-form-grid.story {
+  grid-template-columns: minmax(100px, 0.4fr) minmax(0, 1fr);
+}
+.platform-step {
+  font:
+    500 28px/1 'Cormorant Garamond',
+    Georgia,
+    serif;
+  color: #c0b18b;
+}
+.platform-repeater {
+  padding: 20px 20px 4px;
+  margin-bottom: 18px;
+  border: 1px solid #e2e4d9;
+  border-radius: 12px;
+  background: #fafaf3;
+}
+.platform-repeater-heading {
+  margin-bottom: 18px;
+}
+.platform-page .platform-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #daddcf;
+  border-radius: 7px;
+  color: #657559;
+  background: #fffef7;
+}
+.platform-page .platform-icon-button:hover:not(:disabled) {
+  background: #e9eedf;
+}
+.platform-theme-field {
+  padding: 0;
+  margin: 0 0 24px;
+  border: 0;
+}
+.platform-theme-field legend {
+  padding: 0;
+  margin-bottom: 10px;
+  color: #52634c;
+  font-size: 12px;
+  font-weight: 500;
+}
+.platform-theme-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.platform-theme-option {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 9px;
+  padding: 18px 16px;
+  border: 1px solid #cbd4be;
+  border-radius: 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.platform-page .platform-theme-option input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #617953;
+  flex: 0 0 auto;
+}
+.platform-theme-option:has(input:checked) {
+  box-shadow: 0 0 0 2px #768f60;
+}
+.platform-admin-settings {
+  border-color: #d6c8a9;
+}
+.platform-savebar {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 22px max(18px, env(safe-area-inset-bottom));
+  border: 1px solid #d8decc;
+  border-radius: 14px;
+  background: #fbfcf4f5;
+  box-shadow: 0 -5px 18px #3d4d2e09;
+}
+.platform-savebar > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  min-width: 0;
+  font-size: 12px;
+}
+.platform-savebar a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.platform-auth {
+  max-width: 570px;
+  padding-top: 70px;
+}
+.platform-auth .platform-card {
+  padding: 36px;
+}
+.platform-auth .platform-form {
+  margin: 26px 0;
+}
+.platform-auth .platform-form fieldset {
+  display: grid;
+  gap: 2px;
+}
+.platform-auth .platform-button.primary {
+  width: 100%;
+  margin-top: 4px;
+}
+.platform-auth .platform-card > p {
+  color: var(--studio-muted);
+  margin-top: 14px;
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .platform-container {
+    padding: 32px 24px 48px;
+  }
+  .platform-nav {
+    padding: 16px 24px;
+  }
+  .platform-hero {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .platform-wedding-grid {
+    grid-template-columns: 1fr;
+  }
+  .platform-wedding-card .platform-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .platform-wedding-card .platform-stats > div:nth-child(2) {
+    border-right: 1px solid var(--studio-line);
+  }
+  .platform-wedding-card .platform-stats > div:nth-child(-n + 2) {
+    border-bottom: 0;
+  }
+}
+@media (max-width: 600px) {
+  .platform-page {
+    font-size: 14px;
+  }
+  .platform-nav {
+    align-items: flex-start;
+    padding: max(18px, env(safe-area-inset-top)) 20px 15px;
+    gap: 14px;
+  }
+  .platform-page .platform-brand {
+    font-size: 23px;
+  }
+  .platform-brand span {
+    font-size: 8px;
+  }
+  .platform-nav-links {
+    gap: 4px 12px;
+    font-size: 11px;
+  }
+  .platform-nav-links .platform-button {
+    min-height: 44px;
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+  .platform-nav-links > a:first-child:not(.platform-button) {
+    display: none;
+  }
+  .platform-container {
+    padding: 29px 18px max(32px, env(safe-area-inset-bottom));
+  }
+  .platform-hero {
+    margin-bottom: 25px;
+  }
+  .platform-hero h1 {
+    font-size: 38px;
+  }
+  .platform-page .platform-description {
+    font-size: 13px;
+  }
+  .platform-card {
+    padding: 21px 18px;
+    border-radius: 14px;
+  }
+  .platform-page h2 {
+    font-size: 27px;
+  }
+  .platform-wedding-card > h2 {
+    font-size: 32px;
+  }
+  .platform-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-radius: 12px;
+  }
+  .platform-stats > div {
+    padding: 16px;
+    border-bottom: 1px solid var(--studio-line);
+  }
+  .platform-stats > div:nth-child(2n) {
+    border-right: 0;
+  }
+  .platform-stats > div:last-child {
+    border-bottom: 0;
+  }
+  .platform-stats dd {
+    font-size: 26px;
+  }
+  .platform-wedding-card .platform-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .platform-wedding-card .platform-stats > div:nth-child(2) {
+    border-right: 0;
+  }
+  .platform-wedding-card .platform-stats > div:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--studio-line);
+  }
+  .platform-wedding-card .platform-stats > div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+  .platform-actions {
+    gap: 8px;
+  }
+  .platform-page .platform-actions .platform-button {
+    flex: 1 1 auto;
+  }
+  .platform-card-footer {
+    gap: 3px 10px;
+  }
+  .platform-card-footer .platform-button {
+    padding: 8px 3px;
+    font-size: 11px;
+  }
+  .platform-grid,
+  .platform-wishes {
+    grid-template-columns: 1fr;
+  }
+  .platform-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .platform-toolbar .platform-field:last-child:not(:first-child) {
+    width: auto;
+  }
+  .platform-section-heading {
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .platform-section-heading > .platform-button {
+    flex-shrink: 0;
+    padding: 9px 10px;
+    font-size: 11px;
+  }
+  .platform-form-grid,
+  .platform-form-grid.three {
+    grid-template-columns: 1fr;
+  }
+  .platform-form-grid.story {
+    grid-template-columns: 1fr;
+  }
+  .platform-page .platform-field input,
+  .platform-page .platform-field select,
+  .platform-page .platform-field textarea {
+    font-size: 16px;
+  }
+  .platform-repeater {
+    padding: 16px 13px 2px;
+  }
+  .platform-repeater-heading {
+    align-items: center;
+    gap: 8px;
+  }
+  .platform-repeater-heading .platform-row-actions {
+    gap: 5px;
+    flex-wrap: nowrap;
+  }
+  .platform-page .platform-icon-button {
+    width: 44px;
+    height: 44px;
+  }
+  .platform-theme-options {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+  .platform-theme-option {
+    padding: 15px;
+  }
+  .platform-savebar {
+    padding: 14px 14px max(14px, env(safe-area-inset-bottom));
+    gap: 12px;
+  }
+  .platform-savebar > div {
+    font-size: 10px;
+    gap: 4px;
+  }
+  .platform-savebar > .platform-button {
+    flex-shrink: 0;
+    padding: 11px 13px;
+  }
+  .platform-empty {
+    padding: 32px 18px;
+  }
+  .platform-auth {
+    padding-top: 34px;
+  }
+  .platform-auth .platform-card {
+    padding: 26px 23px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .platform-page *,
+  .platform-page *::before,
+  .platform-page *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

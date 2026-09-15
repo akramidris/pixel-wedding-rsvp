@@ -7,7 +7,7 @@ try {
     hasTouch: true,
     deviceScaleFactor: 2,
   });
-  await page.goto('http://127.0.0.1:5173/');
+  await page.goto('http://127.0.0.1:5173/#/demo');
   await page.getByRole('button', { name: 'Enter Wedding', exact: true }).click();
   await page.getByRole('button', { name: /explore/ }).click();
   await expect(page.locator('.loading-screen')).toBeHidden();

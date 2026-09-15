@@ -4,6 +4,7 @@ export interface Wish {
   name: string;
   message: string;
   createdAt: string;
+  approved?: boolean;
 }
 export interface RSVP {
   name: string;
@@ -11,9 +12,10 @@ export interface RSVP {
   guests: number;
   message: string;
   createdAt: string;
+  phone?: string;
 }
-// Implement this interface with Supabase / Firebase and replace the export below.
 export interface WeddingRepository {
+  mode: 'demo' | 'supabase';
   getWishes(): Promise<Wish[]>;
   addWish(name: string, message: string): Promise<Wish>;
   getRSVP(): Promise<RSVP | null>;
@@ -30,6 +32,8 @@ function read<T>(suffix: string, fallback: T): T {
   }
 }
 export const weddingRepository: WeddingRepository = {
+  // This adapter is used only by the explicitly labelled /demo route.
+  mode: 'demo',
   async getWishes() {
     const data = read<Wish[]>('wishes', []);
     if (!Array.isArray(data)) throw new Error('Your saved wishes could not be read.');

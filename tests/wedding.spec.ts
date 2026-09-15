@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 
 async function enter(page: Page) {
-  await page.goto('./');
+  await page.goto('./#/demo');
   await page.getByRole('button', { name: 'Enter Wedding', exact: true }).click();
   await expect(page.locator('.loading-screen')).toBeHidden();
   if (await page.getByRole('button', { name: 'Let’s explore' }).isVisible())
@@ -15,7 +15,7 @@ async function menu(page: Page, name: string) {
 test('landing, invitation, venue links, and calendar download', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('./');
+  await page.goto('./#/demo');
   await expect(page.getByRole('heading', { name: 'Adam & Hana' })).toBeVisible();
   await page.screenshot({ path: 'test-results/landing-desktop.png', fullPage: true });
   await page.getByRole('button', { name: /View invitation/ }).click();
@@ -32,7 +32,7 @@ test('landing, invitation, venue links, and calendar download', async ({ page })
   await expect(page.getByRole('heading', { name: 'Guest Arrival' })).toBeVisible();
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Add to calendar' }).click();
-  expect((await download).suggestedFilename()).toBe('our-wedding.ics');
+  expect((await download).suggestedFilename()).toBe('sample-garden-wedding.ics');
   expect(errors).toEqual([]);
 });
 test('game movement, interaction, map, and composed photo', async ({ page }) => {
@@ -56,7 +56,7 @@ test('game movement, interaction, map, and composed photo', async ({ page }) => 
   await expect(page.getByRole('img', { name: /A pixel photo/ })).toBeVisible();
   const download = page.waitForEvent('download');
   await page.getByRole('link', { name: 'Save our memory' }).click();
-  expect((await download).suggestedFilename()).toBe('our-garden-memory.png');
+  expect((await download).suggestedFilename()).toBe('sample-garden-garden-memory.png');
   await page.getByRole('button', { name: 'Close dialog' }).click();
   await page.screenshot({ path: 'test-results/garden-desktop.png' });
   expect(errors).toEqual([]);
@@ -99,7 +99,7 @@ test('music is opt-in and starts only after entering', async ({ page }) => {
   });
   const count = () =>
     page.evaluate(() => (window as unknown as { __musicPlays: number }).__musicPlays);
-  await page.goto('./');
+  await page.goto('./#/demo');
   expect(await count()).toBe(0);
   await page.getByRole('button', { name: 'Music off', exact: true }).click();
   expect(await count()).toBe(0);
@@ -154,7 +154,7 @@ test('mobile layout and touch movement', async ({ browser, baseURL }) => {
     hasTouch: true,
   });
   const page = await context.newPage();
-  await page.goto(baseURL!);
+  await page.goto(new URL('./#/demo', baseURL!).href);
   await page.evaluate(() => document.fonts.ready);
   const titleBounds = (await page.getByRole('heading', { name: 'Adam & Hana' }).boundingBox())!;
   const cardBounds = (await page.locator('.hero-copy').boundingBox())!;

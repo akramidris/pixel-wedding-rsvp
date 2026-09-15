@@ -13,8 +13,9 @@ import { MusicControls, useMusic } from './components/MusicControls';
 import { Countdown } from './components/Countdown';
 import { bridge, type Panel } from './game/bridge';
 import { areas, type Area, type AreaId } from './game/world';
-import { weddingConfig as w } from './config/wedding';
+import { useWeddingConfig } from './context/WeddingContext';
 import { drawCharacter } from './game/art/characters';
+import './wedding-theme.css';
 
 const GameView = lazy(() => import('./components/GameView'));
 const panelTitles: Record<string, [string, string, string]> = {
@@ -96,6 +97,7 @@ function Controls({ onDone }: { onDone: () => void }) {
   );
 }
 function Schedule() {
+  const w = useWeddingConfig();
   const calendar = () => {
     const stamp = (s: string) => new Date(s).toISOString().replace(/[-:]/g, '').replace('.000', '');
     const escape = (s: string) =>
@@ -105,7 +107,7 @@ function Schedule() {
       'VERSION:2.0',
       'PRODID:-//A Garden of Us//Wedding//EN',
       'BEGIN:VEVENT',
-      `UID:${w.storageKey}@garden-of-us`,
+      `UID:${w.id}@garden-of-us`,
       `DTSTAMP:${stamp(new Date().toISOString())}`,
       `DTSTART:${stamp(w.wedding.isoDate)}`,
       `DTEND:${stamp(w.wedding.endDate)}`,
@@ -117,7 +119,7 @@ function Schedule() {
     const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'our-wedding.ics';
+    a.download = `${w.slug}-wedding.ics`;
     a.click();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
@@ -133,8 +135,8 @@ function Schedule() {
       </div>
       <Countdown />
       <div className="timeline">
-        {w.schedule.map((item) => (
-          <article key={item.time}>
+        {w.schedule.map((item, i) => (
+          <article key={`${i}-${item.time}`}>
             <time>{item.time}</time>
             <div>
               <h3>{item.title}</h3>
@@ -151,6 +153,7 @@ function Schedule() {
   );
 }
 export default function App() {
+  const w = useWeddingConfig();
   const [entered, setEntered] = useState(false),
     [ready, setReady] = useState(false),
     [panel, setPanel] = useState<Panel>(null);
@@ -163,6 +166,15 @@ export default function App() {
     [notice, setNotice] = useState('');
   const music = useMusic();
   const touchControls = useTouchControls();
+  useEffect(() => {
+    const previousTitle = document.title;
+    document.title = `${w.groom.name} & ${w.bride.name} · ${w.title}`;
+    return () => {
+      document.title = previousTitle;
+      bridge.paused = true;
+      bridge.resetInput();
+    };
+  }, [w.id, w.groom.name, w.bride.name, w.title]);
   useEffect(() => {
     if (!entered) return;
     document.documentElement.classList.add('wedding-game-active');
@@ -208,7 +220,7 @@ export default function App() {
       }),
     ];
     return () => unsubscribers.forEach((unsubscribe) => unsubscribe());
-  }, [open]);
+  }, [open, w.storageKey]);
   useEffect(() => {
     const keyboard = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement;
@@ -277,7 +289,7 @@ export default function App() {
   };
   const title = panel ? panelTitles[panel] : null;
   return (
-    <>
+    <div className="wedding-experience" data-wedding-theme={w.theme}>
       {!entered ? (
         <StartScreen
           onEnter={enter}
@@ -453,8 +465,8 @@ export default function App() {
             <>
               <p className="modal-intro">A few small moments that led us to forever.</p>
               <div className="timeline story-timeline">
-                {w.story.map((item) => (
-                  <article key={item.year}>
+                {w.story.map((item, i) => (
+                  <article key={`${i}-${item.year}`}>
                     <time>{item.year}</time>
                     <div>
                       <h3>{item.title}</h3>
@@ -498,7 +510,11 @@ export default function App() {
                   alt="A pixel photo of you with the bride and groom at the pelamin"
                 />
               </div>
-              <a className="primary full-width" href={photo} download="our-garden-memory.png">
+              <a
+                className="primary full-width"
+                href={photo}
+                download={`${w.slug}-garden-memory.png`}
+              >
                 <Icon name="camera" size={17} />
                 Save our memory
               </a>
@@ -552,6 +568,6 @@ export default function App() {
           </button>
         </Modal>
       )}
-    </>
+    </div>
   );
 }

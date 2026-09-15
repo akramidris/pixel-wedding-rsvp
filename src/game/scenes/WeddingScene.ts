@@ -4,10 +4,10 @@ import { drawCharacter, makeSprites, SPRITE_WIDTH, SPRITE_HEIGHT } from '../art/
 import { WORLD } from '../world';
 import { Player } from '../entities/Player';
 import { NPC } from '../entities/NPC';
-import { npcDialogue } from '../../data/npcDialogue';
+import { createNPCDialogue } from '../../data/npcDialogue';
 import { InteractionSystem } from '../systems/InteractionSystem';
 import { bridge } from '../bridge';
-import { weddingConfig } from '../../config/wedding';
+import type { WeddingConfig } from '../../types/wedding';
 import { supportsTouchControls } from '../controls/touch';
 
 export class WeddingScene extends Phaser.Scene {
@@ -16,7 +16,7 @@ export class WeddingScene extends Phaser.Scene {
   private hint!: Phaser.GameObjects.Text;
   private lastPosition = 0;
   private npcs: NPC[] = [];
-  constructor() {
+  constructor(private readonly weddingConfig: WeddingConfig) {
     super('Wedding');
   }
   create() {
@@ -56,7 +56,7 @@ export class WeddingScene extends Phaser.Scene {
       walls.add(wall);
     }
     this.physics.add.collider(this.player, walls);
-    const npcs = npcDialogue.map((data) => new NPC(this, data));
+    const npcs = createNPCDialogue(this.weddingConfig).map((data) => new NPC(this, data));
     this.npcs = npcs;
     npcs.forEach((npc) => this.physics.add.collider(this.player, npc));
     this.interactions = new InteractionSystem(this.player, npcs);
@@ -93,7 +93,7 @@ export class WeddingScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-ENTER', interact);
     this.input.keyboard!.on('keydown-SPACE', interact);
     bridge.interact = interact;
-    bridge.takePhoto = () => {
+    const takePhoto = () => {
       // Draw a keepsake from local assets, including the actual guest character.
       const photo = document.createElement('canvas');
       photo.width = 800;
@@ -122,12 +122,23 @@ export class WeddingScene extends Phaser.Scene {
       c.fillStyle = '#607453';
       c.textAlign = 'center';
       c.font = '42px "Cormorant Garamond", Georgia, serif';
-      c.fillText(`${weddingConfig.groom.name} & ${weddingConfig.bride.name}`, 400, 776);
+      c.fillText(
+        `${this.weddingConfig.groom.name} & ${this.weddingConfig.bride.name}`,
+        400,
+        776,
+        740,
+      );
       c.fillStyle = '#92957b';
       c.font = '13px "DM Sans", sans-serif';
-      c.fillText(`${weddingConfig.wedding.shortDate} · A little moment, forever ours`, 400, 809);
+      c.fillText(
+        `${this.weddingConfig.wedding.shortDate} · A little moment, forever ours`,
+        400,
+        809,
+        740,
+      );
       bridge.emit('photo', photo.toDataURL('image/png'));
     };
+    bridge.takePhoto = takePhoto;
     let wasPaused = false;
     const pauseKeys = () => {
       if (wasPaused === bridge.paused) return;
@@ -145,8 +156,14 @@ export class WeddingScene extends Phaser.Scene {
     this.events.once('shutdown', () => {
       touchMedia.removeEventListener('change', updateHintDevice);
       this.scale.off('resize', resize);
-      bridge.interact = () => {};
-      bridge.takePhoto = () => {};
+      this.events.off('preupdate', pauseKeys);
+      this.input.keyboard?.off('keydown-E', interact);
+      this.input.keyboard?.off('keydown-ENTER', interact);
+      this.input.keyboard?.off('keydown-SPACE', interact);
+      this.input.keyboard?.disableGlobalCapture();
+      // An older game may finish destroying after the next wedding has mounted.
+      if (bridge.interact === interact) bridge.interact = () => {};
+      if (bridge.takePhoto === takePhoto) bridge.takePhoto = () => {};
     });
     // Ambient drifting petals; animation stays inside Phaser.
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

@@ -16,10 +16,18 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
+    // Only the isolated development test server receives a fake backend URL.
+    // HTTP fixtures intercept it; no test identity is baked into deployment.
+    env: production
+      ? undefined
+      : {
+          VITE_SUPABASE_URL: 'https://wedding.test.supabase.co',
+          VITE_SUPABASE_ANON_KEY: 'sb_publishable_test_fixture_not_a_real_key',
+        },
     command: production
       ? 'npm run preview -- --port 4175 --strictPort'
       : 'npm run dev -- --port 5173 --strictPort',
     url: baseURL,
-    reuseExistingServer: !production && !process.env.CI,
+    reuseExistingServer: false,
   },
 });

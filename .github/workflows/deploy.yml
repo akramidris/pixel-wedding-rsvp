@@ -27,9 +27,14 @@ jobs:
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
       - name: Install dependencies
         run: npm ci
+      - name: Verify database isolation and policies
+        run: npm run test:database
       - name: Build for the actual Pages URL
         env:
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}/
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_ROUTER_MODE: hash
         run: npm run build
       - name: Upload website
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
