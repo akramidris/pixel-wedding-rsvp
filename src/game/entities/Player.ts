@@ -23,27 +23,65 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
           frameRate: 9,
           repeat: -1,
         });
+    const stopOnReset = bridge.on('inputreset', () => {
+      Object.values(this.keys).forEach((key) => key.reset());
+      this.stopMovement();
+    });
+    const stopOnRelease = bridge.on('joystickchange', (state) => {
+      // Stop before the next physics step, while respecting held keyboard input.
+      if (!state.isActive || state.magnitude === 0) this.updateMovement();
+    });
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
+      stopOnReset();
+      stopOnRelease();
+    });
   }
-  updateMovement() {
+
+  private digitalInput() {
     const k = this.keys,
       v = bridge.input;
+    const right = k.D.isDown || k.RIGHT.isDown || v.right;
+    const left = k.A.isDown || k.LEFT.isDown || v.left;
+    const down = k.S.isDown || k.DOWN.isDown || v.down;
+    const up = k.W.isDown || k.UP.isDown || v.up;
+    return {
+      x: Number(right) - Number(left),
+      y: Number(down) - Number(up),
+      active: right || left || down || up,
+    };
+  }
+
+  private stopMovement() {
+    if (!this.body) return;
+    this.setVelocity(0, 0);
+    this.anims.stop();
+    this.anims.timeScale = 1;
+    this.setFrame(this.direction * 3);
+  }
+
+  updateMovement() {
     let x = 0,
       y = 0;
     if (!bridge.paused) {
-      x =
-        Number(k.D.isDown || k.RIGHT.isDown || v.right) -
-        Number(k.A.isDown || k.LEFT.isDown || v.left);
-      y = Number(k.S.isDown || k.DOWN.isDown || v.down) - Number(k.W.isDown || k.UP.isDown || v.up);
+      const digital = this.digitalInput();
+      if (digital.active) {
+        const length = Math.hypot(digital.x, digital.y);
+        if (length > 0) {
+          x = digital.x / length;
+          y = digital.y / length;
+        }
+      } else if (bridge.joystick.isActive) {
+        const { directionX, directionY, magnitude } = bridge.joystick;
+        x = directionX * magnitude;
+        y = directionY * magnitude;
+      }
     }
     this.setVelocity(x * 150, y * 150);
-    if (x && y) (this.body as Phaser.Physics.Arcade.Body).velocity.normalize().scale(150);
     if (x || y) {
-      this.direction = x < 0 ? 1 : x > 0 ? 2 : y < 0 ? 3 : 0;
+      this.direction = Math.abs(x) >= Math.abs(y) ? (x < 0 ? 1 : 2) : y < 0 ? 3 : 0;
       this.play(`walk-${this.direction}`, true);
-    } else {
-      this.anims.stop();
-      this.setFrame(this.direction * 3);
-    }
+      this.anims.timeScale = Math.max(0.25, Math.hypot(x, y));
+    } else this.stopMovement();
     this.setDepth(100 + this.y);
   }
 }

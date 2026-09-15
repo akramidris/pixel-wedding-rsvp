@@ -79,22 +79,23 @@ test('Retina canvas and compact minimap survive rotation without moving the gues
   await expect(page.getByRole('button', { name: 'Show minimap', exact: true })).toBeVisible();
 
   const beforeTop = await dot.evaluate((element) => parseFloat(element.style.top));
-  const up = page.getByRole('button', { name: 'Move up', exact: true });
-  await expect(up).toBeVisible();
-  const box = (await up.boundingBox())!;
-  expect(box.width, 'Landscape touch target must remain at least 44px wide').toBeGreaterThanOrEqual(
-    44,
+  const joystick = page.getByRole('group', { name: 'Movement joystick', exact: true });
+  await expect(joystick).toBeVisible();
+  const box = (await joystick.boundingBox())!;
+  expect(box.width, 'Landscape joystick keeps a generous touch surface').toBeGreaterThanOrEqual(
+    110,
   );
-  expect(
-    box.height,
-    'Landscape touch target must remain at least 44px tall',
-  ).toBeGreaterThanOrEqual(44);
+  expect(box.height, 'Landscape joystick stays circular').toBe(box.width);
   const touch = await page.context().newCDPSession(page);
   try {
     // Genuine held touch input checks pointer capture after the canvas resizes.
     await touch.send('Input.dispatchTouchEvent', {
       type: 'touchStart',
-      touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 }],
+      touchPoints: [{ id: 1, x: box.x + box.width / 2, y: box.y + box.height / 2 }],
+    });
+    await touch.send('Input.dispatchTouchEvent', {
+      type: 'touchMove',
+      touchPoints: [{ id: 1, x: box.x + box.width / 2, y: box.y + 8 }],
     });
     await expect
       .poll(async () => dot.evaluate((element) => parseFloat(element.style.top)))
@@ -138,6 +139,6 @@ test('Retina canvas and compact minimap survive rotation without moving the gues
   });
   await page.getByRole('button', { name: 'Close dialog', exact: true }).tap();
   await expect(dialog).toBeHidden();
-  await expect(up).toBeVisible();
+  await expect(joystick).toBeVisible();
   expect(errors).toEqual([]);
 });

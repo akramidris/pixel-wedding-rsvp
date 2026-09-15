@@ -1,0 +1,232 @@
+.wedding-game-active {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+.game-shell {
+  touch-action: none;
+  overscroll-behavior: none;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Touch capability, rather than viewport width, owns the control layout. */
+.game-shell.has-touch-controls {
+  --touch-tray-height: clamp(154px, 38vw, 166px);
+}
+.has-touch-controls .game-canvas {
+  bottom: calc(var(--touch-tray-height) + env(safe-area-inset-bottom));
+}
+.has-touch-controls .mobile-controls {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.has-touch-controls .mobile-controls::before {
+  display: block;
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: calc(var(--touch-tray-height) + env(safe-area-inset-bottom));
+  background: #f4f3e9;
+  border-top: 1px solid #d6ddc9;
+  box-shadow: 0 -3px 16px #3a51300a;
+}
+.has-touch-controls .minimap {
+  bottom: calc(var(--touch-tray-height) + env(safe-area-inset-bottom) + 12px);
+  right: calc(12px + env(safe-area-inset-right));
+}
+.has-touch-controls .minimap-toggle {
+  display: flex;
+}
+.has-touch-controls .minimap.mini-closed .map-image,
+.has-touch-controls .minimap-label {
+  display: none;
+}
+.has-touch-controls .game-bottom {
+  bottom: 0;
+}
+.has-touch-controls .nearby-action {
+  position: absolute;
+  bottom: calc(var(--touch-tray-height) + env(safe-area-inset-bottom) + 12px);
+  left: 0;
+  right: 104px;
+  max-width: calc(100% - 110px);
+}
+.has-touch-controls .control-hints {
+  display: none;
+}
+
+.mobile-joystick {
+  --joystick-size: clamp(120px, 34vw, 144px);
+  --stick-x: 0px;
+  --stick-y: 0px;
+  position: absolute;
+  left: calc(20px + env(safe-area-inset-left));
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  width: var(--joystick-size);
+  height: var(--joystick-size);
+  border-radius: 50%;
+  border: 1px solid #b8c5a3;
+  background: #fffdf5cc;
+  box-shadow:
+    inset 0 0 0 5px #f5f4e380,
+    0 3px 12px #344b2e14;
+  opacity: 0.55;
+  transition: opacity 120ms ease;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: grab;
+  contain: layout style;
+}
+.mobile-joystick[data-active='true'] {
+  opacity: 0.92;
+  cursor: grabbing;
+}
+.mobile-joystick:focus-visible {
+  outline: 2px solid #657c55;
+  outline-offset: 4px;
+  opacity: 0.85;
+}
+.joystick-orbit {
+  position: absolute;
+  inset: 15%;
+  border: 1px solid #c4cbb080;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.joystick-thumb {
+  position: absolute;
+  width: 42%;
+  height: 42%;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  border: 1px solid #a6b494;
+  background: #e0e7cf;
+  box-shadow:
+    inset 0 1px 0 #fffdf5,
+    0 3px 8px #40593422;
+  display: grid;
+  place-items: center;
+  transform: translate3d(calc(-50% + var(--stick-x)), calc(-50% + var(--stick-y)), 0);
+  transition: transform 90ms ease-out;
+  pointer-events: none;
+}
+.mobile-joystick[data-active='true'] .joystick-thumb {
+  transition: none;
+}
+.joystick-thumb > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #839b70;
+  box-shadow: 0 1px 0 #f8f5e8;
+}
+.has-touch-controls .interact-mobile {
+  width: clamp(68px, 18vw, 76px);
+  height: clamp(68px, 18vw, 76px);
+  right: calc(27px + env(safe-area-inset-right));
+  bottom: calc(42px + env(safe-area-inset-bottom));
+  border-radius: 50%;
+  background: #6b835c;
+  border: 2px solid #a3b38d;
+  color: #fffdf1;
+  opacity: 0.7;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow:
+    0 3px 0 #536b43,
+    inset 0 1px 0 #fffff530;
+}
+.has-touch-controls .interact-mobile[data-ready='true'] {
+  opacity: 0.96;
+  border-color: #c8d4b1;
+}
+.has-touch-controls .interact-mobile:active {
+  opacity: 1;
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #536b43;
+}
+
+.game-shell:not(.has-touch-controls) .game-canvas {
+  bottom: 0;
+}
+.game-shell:not(.has-touch-controls) .minimap-toggle {
+  display: none;
+}
+.game-shell:not(.has-touch-controls) .minimap .map-image {
+  display: block;
+}
+.game-shell:not(.has-touch-controls) .minimap-label {
+  display: flex;
+}
+@media (max-width: 760px) {
+  .game-shell:not(.has-touch-controls) .minimap {
+    width: 116px;
+    bottom: 20px;
+  }
+  .game-shell:not(.has-touch-controls) .game-bottom {
+    bottom: 20px;
+  }
+  .game-shell:not(.has-touch-controls) .nearby-action {
+    position: static;
+    margin: 0;
+    max-width: calc(100% - 128px);
+  }
+}
+@media (max-height: 550px) and (orientation: landscape) {
+  .has-touch-controls .game-canvas {
+    bottom: 0;
+  }
+  .has-touch-controls .mobile-controls::before {
+    display: none;
+  }
+  .has-touch-controls .mobile-joystick {
+    --joystick-size: clamp(110px, 30vh, 126px);
+    left: calc(18px + env(safe-area-inset-left));
+    bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  .has-touch-controls .interact-mobile {
+    width: 68px;
+    height: 68px;
+    bottom: calc(25px + env(safe-area-inset-bottom));
+    right: calc(22px + env(safe-area-inset-right));
+  }
+  .has-touch-controls .minimap {
+    bottom: calc(110px + env(safe-area-inset-bottom));
+  }
+  .has-touch-controls .nearby-action {
+    display: none;
+  }
+  .has-touch-controls .game-header {
+    left: calc(12px + env(safe-area-inset-left));
+    right: calc(12px + env(safe-area-inset-right));
+  }
+  .has-touch-controls .location-card {
+    left: calc(12px + env(safe-area-inset-left));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-joystick,
+  .joystick-thumb {
+    transition: none;
+  }
+}

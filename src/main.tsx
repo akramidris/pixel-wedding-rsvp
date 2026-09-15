@@ -9,6 +9,7 @@ import '@fontsource/cormorant-garamond/latin-400-italic.css';
 import App from './App';
 import './styles.css';
 import './visuals.css';
+import './joystick.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

@@ -8,6 +8,7 @@ import { npcDialogue } from '../../data/npcDialogue';
 import { InteractionSystem } from '../systems/InteractionSystem';
 import { bridge } from '../bridge';
 import { weddingConfig } from '../../config/wedding';
+import { supportsTouchControls } from '../controls/touch';
 
 export class WeddingScene extends Phaser.Scene {
   private player!: Player;
@@ -60,22 +61,21 @@ export class WeddingScene extends Phaser.Scene {
     npcs.forEach((npc) => this.physics.add.collider(this.player, npc));
     this.interactions = new InteractionSystem(this.player, npcs);
     this.hint = this.add
-      .text(
-        0,
-        0,
-        window.matchMedia('(pointer: coarse)').matches ? 'A · Interact' : 'E · Interact',
-        {
-          fontFamily: 'DM Sans',
-          fontSize: '10px',
-          resolution: 3,
-          color: '#fff8e7',
-          backgroundColor: '#4e6654',
-          padding: { x: 7, y: 4 },
-        },
-      )
+      .text(0, 0, supportsTouchControls() ? 'A · Interact' : 'E · Interact', {
+        fontFamily: 'DM Sans',
+        fontSize: '10px',
+        resolution: 3,
+        color: '#fff8e7',
+        backgroundColor: '#4e6654',
+        padding: { x: 7, y: 4 },
+      })
       .setOrigin(0.5)
       .setDepth(2000);
     const camera = this.cameras.main;
+    const touchMedia = window.matchMedia('(any-pointer: coarse)');
+    const updateHintDevice = () =>
+      this.hint.setText(supportsTouchControls() ? 'A · Interact' : 'E · Interact');
+    touchMedia.addEventListener('change', updateHintDevice);
     camera.setBounds(0, 0, WORLD.width, WORLD.height);
     const density = 1 / this.scale.zoom;
     const zoomFor = (width: number, height: number) =>
@@ -143,6 +143,7 @@ export class WeddingScene extends Phaser.Scene {
     const resize = (size: Phaser.Structs.Size) => camera.setZoom(zoomFor(size.width, size.height));
     this.scale.on('resize', resize);
     this.events.once('shutdown', () => {
+      touchMedia.removeEventListener('change', updateHintDevice);
       this.scale.off('resize', resize);
       bridge.interact = () => {};
       bridge.takePhoto = () => {};

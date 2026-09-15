@@ -1,41 +1,22 @@
 import { bridge } from '../game/bridge';
-type Direction = 'up' | 'down' | 'left' | 'right';
-export function MobileControls() {
-  const arrows: [Direction, string][] = [
-    ['up', '▲'],
-    ['left', '◀'],
-    ['right', '▶'],
-    ['down', '▼'],
-  ];
+import { MobileJoystick } from './MobileJoystick';
+export function MobileControls({ hasNearby = false }: { hasNearby?: boolean }) {
   return (
     <div className="mobile-controls">
-      <div className="direction-pad">
-        {arrows.map(([direction, symbol]) => (
-          <button
-            key={direction}
-            className={`direction ${direction}`}
-            aria-label={`Move ${direction}`}
-            onPointerDown={(e) => {
-              e.preventDefault();
-              e.currentTarget.setPointerCapture(e.pointerId);
-              bridge.input[direction] = true;
-            }}
-            onPointerUp={() => {
-              bridge.input[direction] = false;
-            }}
-            onPointerCancel={() => {
-              bridge.input[direction] = false;
-            }}
-            onLostPointerCapture={() => {
-              bridge.input[direction] = false;
-            }}
-          >
-            {symbol}
-          </button>
-        ))}
-        <span className="pad-center" />
-      </div>
-      <button className="interact-mobile" aria-label="Interact" onClick={() => bridge.interact()}>
+      <MobileJoystick />
+      <button
+        className="interact-mobile"
+        data-ready={hasNearby}
+        aria-label="Interact"
+        onPointerDown={(event) => {
+          if (event.button !== 0) return;
+          event.preventDefault();
+          bridge.interact();
+        }}
+        onClick={(event) => {
+          if (event.detail === 0) bridge.interact();
+        }}
+      >
         A<small>INTERACT</small>
       </button>
     </div>

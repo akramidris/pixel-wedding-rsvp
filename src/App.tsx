@@ -8,6 +8,7 @@ import { WishModal } from './components/WishModal';
 import { RSVPModal } from './components/RSVPModal';
 import { MiniMap } from './components/MiniMap';
 import { MobileControls } from './components/MobileControls';
+import { useTouchControls } from './hooks/useTouchControls';
 import { MusicControls, useMusic } from './components/MusicControls';
 import { Countdown } from './components/Countdown';
 import { bridge, type Panel } from './game/bridge';
@@ -62,7 +63,8 @@ function Controls({ onDone }: { onDone: () => void }) {
             Use <kbd>W</kbd>
             <kbd>A</kbd>
             <kbd>S</kbd>
-            <kbd>D</kbd> or the arrow keys to move. On mobile, use the directional pad.
+            <kbd>D</kbd> or the arrow keys to move. On mobile, drag the joystick. Move it a little
+            to stroll, farther to walk faster, and release to stop.
           </p>
         </section>
       </div>
@@ -160,6 +162,16 @@ export default function App() {
     [fullscreen, setFullscreen] = useState(false),
     [notice, setNotice] = useState('');
   const music = useMusic();
+  const touchControls = useTouchControls();
+  useEffect(() => {
+    if (!entered) return;
+    document.documentElement.classList.add('wedding-game-active');
+    document.body.classList.add('wedding-game-active');
+    return () => {
+      document.documentElement.classList.remove('wedding-game-active');
+      document.body.classList.remove('wedding-game-active');
+    };
+  }, [entered]);
   const close = useCallback(() => setPanel(null), []);
   const open = useCallback((next: Panel) => {
     bridge.resetInput();
@@ -274,7 +286,7 @@ export default function App() {
           onMusic={music.toggle}
         />
       ) : (
-        <main className="game-shell">
+        <main className={`game-shell ${touchControls ? 'has-touch-controls' : ''}`}>
           <Suspense fallback={null}>
             <GameView onError={onGameError} />
           </Suspense>
@@ -295,7 +307,16 @@ export default function App() {
             </div>
           )}
           <header className="game-header">
-            <button className="game-brand" onClick={() => open('menu')}>
+            <button
+              className="game-brand"
+              onClick={() => open('menu')}
+              onPointerDown={(event) => {
+                if (event.pointerType !== 'mouse') {
+                  event.preventDefault();
+                  open('menu');
+                }
+              }}
+            >
               <Icon name="sprout" size={25} />
               <span>
                 {w.groom.name} <i>&</i> {w.bride.name}
@@ -306,6 +327,12 @@ export default function App() {
               <button
                 className="icon-button"
                 aria-label="Open village map"
+                onPointerDown={(event) => {
+                  if (event.pointerType !== 'mouse') {
+                    event.preventDefault();
+                    open('map');
+                  }
+                }}
                 onClick={() => open('map')}
               >
                 <Icon name="map" />
@@ -313,6 +340,12 @@ export default function App() {
               <button
                 className="icon-button"
                 aria-label="Music settings"
+                onPointerDown={(event) => {
+                  if (event.pointerType !== 'mouse') {
+                    event.preventDefault();
+                    open('music');
+                  }
+                }}
                 onClick={() => open('music')}
               >
                 <Icon name={music.enabled ? 'volume' : 'muted'} />
@@ -327,6 +360,12 @@ export default function App() {
               <button
                 className="icon-button"
                 aria-label="Open wedding menu"
+                onPointerDown={(event) => {
+                  if (event.pointerType !== 'mouse') {
+                    event.preventDefault();
+                    open('menu');
+                  }
+                }}
                 onClick={() => open('menu')}
               >
                 <Icon name="menu" />
@@ -370,7 +409,7 @@ export default function App() {
                   </button>
                 )}
               </div>
-              <MobileControls />
+              {touchControls && <MobileControls hasNearby={!!nearby} />}
             </>
           )}
           {notice && (

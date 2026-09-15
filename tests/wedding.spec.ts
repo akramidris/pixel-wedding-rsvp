@@ -164,19 +164,30 @@ test('mobile layout and touch movement', async ({ browser, baseURL }) => {
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
   ).toBeTruthy();
-  await page.screenshot({ path: 'test-results/landing-mobile.png', fullPage: true });
-  await page.getByRole('button', { name: 'Enter Wedding', exact: true }).click();
+  // Keep this a viewport capture: full-page capture in this Chromium version
+  // resets the manually created context's touch emulation to desktop defaults.
+  await page.screenshot({ path: 'test-results/landing-mobile.png' });
+  await page.getByRole('button', { name: 'Enter Wedding', exact: true }).tap();
   await expect(page.locator('.loading-screen')).toBeHidden();
-  await page.getByRole('button', { name: 'Let’s explore' }).click();
-  await expect(page.getByRole('button', { name: 'Move up' })).toBeVisible();
+  await page.getByRole('button', { name: 'Let’s explore' }).tap();
+  const joystick = page.getByRole('group', { name: 'Movement joystick', exact: true });
+  await expect(joystick).toBeVisible();
   const dot = page.locator('.minimap .player-dot'),
     before = await dot.getAttribute('style');
-  const button = page.getByRole('button', { name: 'Move up' });
-  const box = (await button.boundingBox())!;
-  await page.mouse.move(box.x + 20, box.y + 20);
-  await page.mouse.down();
-  await page.waitForTimeout(400);
-  await page.mouse.up();
+  const box = (await joystick.boundingBox())!;
+  const touch = await context.newCDPSession(page);
+  await touch.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [{ id: 1, x: box.x + box.width / 2, y: box.y + box.height / 2 }],
+  });
+  await touch.send('Input.dispatchTouchEvent', {
+    type: 'touchMove',
+    touchPoints: [{ id: 1, x: box.x + box.width / 2, y: box.y + 8 }],
+  });
+  await expect(dot).not.toHaveAttribute('style', before!);
+  await touch.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await touch.detach();
+  await expect(joystick).toHaveAttribute('data-active', 'false');
   await expect(dot).not.toHaveAttribute('style', before!);
   await page.screenshot({ path: 'test-results/garden-mobile.png' });
   await page.getByRole('button', { name: 'Open wedding menu', exact: true }).tap();

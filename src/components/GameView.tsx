@@ -21,7 +21,7 @@ export default function GameView({ onError }: { onError: (message: string) => vo
     <div
       className="game-canvas"
       ref={parent}
-      aria-label="Wedding garden game. Use arrow keys or WASD to move, E to interact, and M for the map."
+      aria-label="Wedding garden game. Use the touch joystick or arrow keys and WASD to move. Tap A or press E to interact, and use M for the map."
     />
   );
 }

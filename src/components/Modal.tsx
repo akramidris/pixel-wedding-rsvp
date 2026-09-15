@@ -18,6 +18,7 @@ export function Modal({
   dialogue?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const backdropPointer = useRef<number | null>(null);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     const frame = requestAnimationFrame(() =>
@@ -57,8 +58,19 @@ export function Modal({
   return (
     <div
       className={`modal-backdrop ${dialogue ? 'rpg-backdrop' : ''}`}
-      onClick={(event) => {
-        if (event.target === event.currentTarget) onClose();
+      onPointerDown={(event) => {
+        backdropPointer.current =
+          event.target === event.currentTarget && event.button === 0 ? event.pointerId : null;
+      }}
+      onPointerUp={(event) => {
+        const startedHere = backdropPointer.current === event.pointerId;
+        backdropPointer.current = null;
+        // Opening a card on another control's pointerdown can retarget its
+        // release/click to this new backdrop. Only dismiss a gesture begun here.
+        if (startedHere && event.target === event.currentTarget) onClose();
+      }}
+      onPointerCancel={() => {
+        backdropPointer.current = null;
       }}
     >
       <div

@@ -59,7 +59,9 @@ are sample content. Replace them before sharing.
 - **E / Enter / Space**: interact when close to a person or place.
 - **M**: toggle the village map.
 - **Escape**: open the pause menu; close an open card.
-- Touchscreen: directional pad at bottom left, **A** interaction at bottom right.
+- Touchscreen: drag the analog joystick at bottom left; **A** interacts at bottom right.
+  Small drags stroll, full drags reach normal speed, and release stops immediately.
+  The joystick has a 15% radial dead zone and supports a second finger on A or the menu.
 - The top toolbar provides map, music/volume, fullscreen, and the wedding menu.
 - The map and menu give direct access to details for guests who prefer reading.
 - Movement pauses while cards are open or the window loses focus. Forms accept
@@ -146,6 +148,10 @@ npm test
 Tests launch the local development server automatically and cover the landing,
 game loading, keyboard movement, paused form input, guestbook/RSVP persistence,
 navigation, calendar/photo downloads, map, and mobile layout/controls.
+
+Analog touch tests also cover gradual speed, arbitrary angles, normalized
+diagonals, multi-touch, release/cancellation, rotation, and collision. See
+[mobile joystick notes](docs/mobile-joystick.md) for input tuning and layout details.
 
 The same suite can check a production build under a GitHub Pages-style prefix.
 For example, in PowerShell (the prefix below is only a local test value):
